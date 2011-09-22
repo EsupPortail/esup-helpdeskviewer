@@ -23,3 +23,24 @@ text-align:center;
 margin-top: 20px;
 color: #FF1E00;
 }
+
+.helpdeskviewer-menu ul{
+margin-bottom:15px;
+ }
+.helpdeskviewer-menu ul li {
+ display: inline;
+font-weight:bold;
+}
+.helpdeskviewer-menu li#home{
+margin-left: 30px;
+}
+.helpdeskviewer-menu li span{
+margin:0 .5em 0 .5em;
+}
+.helpdeskviewer-menu li img{
+padding-right:.4em;
+vertical-align:text-bottom;
+}
+.helpdeskviewer-menu .bold{
+color: #DD3849 !important;;
+}

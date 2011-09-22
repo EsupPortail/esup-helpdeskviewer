@@ -36,7 +36,10 @@ public class WebController {
 	private static final String PREF_WSDL_LOCATION = "wsdlLocation";
 	private static final String PREF_MAX_TICKETS = "maxTickets";
 	private static final String PREF_USER_UID_ATTR = "userUidAttr";	
-
+	private static final String URL_SERVLET_HOME = "stylesheets/welcome.faces";	
+	private static final String URL_PORTLET_HOME = "uPortal/render.userLayoutRootNode.uP";	
+	private static final String PREF_PORTLET_FNAME = "portletFname";
+	
 	@RequestMapping("VIEW")
 	public ModelAndView renderView(RenderRequest request,
 			RenderResponse response) throws Exception {
@@ -47,17 +50,19 @@ public class WebController {
 		String wsdlLocation = prefs.getValue(PREF_WSDL_LOCATION, null);
 		String maxTickets = prefs.getValue(PREF_MAX_TICKETS, null);
 		String userUidAttr = prefs.getValue(PREF_USER_UID_ATTR, "uid");
-
+		String portletFname = prefs.getValue(PREF_PORTLET_FNAME, null);
+		
 		
 		try {
 			Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
 			String uid = (String) userInfo.get(userUidAttr);
 			
+					
 			String[] splitWsdlLocation = wsdlLocation.split("xfire");
 			String	urlHelpdesk = splitWsdlLocation[0];
 
 			boolean userViewBool = true;
-
+			
 			String selectedTicketFilterId = "ANY";
 
 			// Interface gestionnaire / utilisateur
@@ -82,7 +87,23 @@ public class WebController {
 			// Message si aucun ticket
 			if (tickets.getSimpleTicketView().isEmpty())
 				model.put("noTicketsMsg", "1");
-
+			
+			//Liens menu
+			String linkHome,linkAddTicket,linkFaq;
+			if(portletFname.isEmpty()){
+				 linkHome=urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=welcome");
+				 linkAddTicket=urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=addTicket");
+				 linkFaq=urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=faq");
+			}
+			else{
+				linkHome=urlHelpdesk.concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=welcome");
+				linkAddTicket=urlHelpdesk.concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=addTicket");
+				linkFaq=urlHelpdesk.concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
+			}
+			
+			model.put("linkHome",linkHome);
+			model.put("linkAddTicket",linkAddTicket);
+			model.put("linkFaq",linkFaq);
 			model.put("tickets", tickets.getSimpleTicketView());
 			model.put("filters", filters.getString());
 			model.put("userViewBool", userViewBool);

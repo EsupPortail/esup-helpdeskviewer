@@ -39,7 +39,7 @@
         </snapshotRepository>
     </distributionManagement>
     <build>
-        <defaultGoal>install</defaultGoal>
+        <defaultGoal>package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -97,7 +97,7 @@
                         <include>**/*.properties</include> <include>**/*.xml</include> </includes>
                         </scanTargetPattern> </scanTargetPatterns> -->
                 </configuration>
-            </plugin>
+            </plugin>                    
         </plugins>
     </build>
     <properties>

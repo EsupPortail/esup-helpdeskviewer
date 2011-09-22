@@ -43,6 +43,10 @@
                 <name>userUidAttr</name>
                 <value>uid</value>
             </preference>
+            <preference>
+                <name>portletFname</name>
+                <value></value>
+            </preference>         
         </portlet-preferences>
     
     </portlet>

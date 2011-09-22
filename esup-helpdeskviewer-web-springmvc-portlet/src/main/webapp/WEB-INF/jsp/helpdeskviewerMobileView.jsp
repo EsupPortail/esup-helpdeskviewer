@@ -7,12 +7,21 @@
 --%>
 
   <div class="helpdeskviewer-messages-mobile"> 
-  <div id="nsHvrUserview">
-    <a ${ (userViewBool eq 'true') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="True"/><portlet:param name="selectedTicketFilter" value="ANY"/></portlet:renderURL>">
-              <img src="<%=request.getContextPath()%>/images/user.png" /> <spring:message code="view.userview.user"/></a> /
-    <a ${ (userViewBool eq 'false') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="False"/><portlet:param name="selectedTicketFilter" value="ANY"/></portlet:renderURL>">
-              <img src="<%=request.getContextPath()%>/images/manager.png" /> <spring:message code="view.userview.manager"/></a>
-  </div>
+  <div class="helpdeskviewer-menu">
+  <h3><spring:message code="view.link.title"/></h3>
+  <ul>
+                <li id="home"><img src="<%=request.getContextPath()%>/images/welcome.png" /><a target='blank' href="${linkHome}"><spring:message code="view.link.home"/></a></li>
+                <li><img src="<%=request.getContextPath()%>/images/add.png" /><a target='blank' href="${linkAddTicket}"><spring:message code="view.link.question"/></a></li>
+                <li><img src="<%=request.getContextPath()%>/images/faq-container.png" /><a target='blank' href="${linkFaq}"><spring:message code="view.link.faq"/></a></li>
+  </ul>
+  <hr />
+  <ul>
+    <li><img src="<%=request.getContextPath()%>/images/user.png" /><a ${ (userViewBool eq 'true') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="True"/></portlet:renderURL>">
+              <spring:message code="view.userview.user"/></a><span>/</span></li>
+    <li><img src="<%=request.getContextPath()%>/images/manager.png" /><a ${ (userViewBool eq 'false') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="False"/><portlet:param name="selectedTicketFilter" value="ANY"/></portlet:renderURL>">
+              <spring:message code="view.userview.manager"/></a></li>
+  </ul>
+ </div>
   <div id="helpdeskviewer-main">
   	<c:forEach var="filter" items="${filters}">
  	<h3 class="trigger">
@@ -28,8 +37,8 @@
 	<c:if test="${filter eq selectedTicketFilterId}">
 	  <c:choose>
 	  		<c:when test="${noTicketsMsg eq '1'}">
-				<p class="alarm"><spring:message code="view.ticket.message.alarm"/><br />
-				<a href="${urlHelpdesk}" target="_blank"> => <spring:message code="view.ticket.message.url"/></a></p>
+				<p class="alarm"><spring:message code="view.ticket.message.alarm"/></p>
+				<a class="alarm" href="${urlHelpdesk}" target="_blank"> => <spring:message code="view.ticket.message.url"/></a>
 	  		</c:when>
 	   <c:otherwise>     
          <c:forEach var="ticket" items="${tickets}">	

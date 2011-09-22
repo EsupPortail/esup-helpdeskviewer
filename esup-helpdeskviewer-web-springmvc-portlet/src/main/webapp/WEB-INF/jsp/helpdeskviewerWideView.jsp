@@ -6,11 +6,19 @@
  
 <div class="portlet-section">
   <div class="portlet-section-body">
-    <a ${ (userViewBool eq 'true') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="True"/><portlet:param name="selectedTicketFilter" value="ANY"/></portlet:renderURL>">
-              <img src="<%=request.getContextPath()%>/images/user.png" /> <spring:message code="view.userview.user"/></a> /
-    <a ${ (userViewBool eq 'false') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="False"/><portlet:param name="selectedTicketFilter" value="ANY"/></portlet:renderURL>">
-              <img src="<%=request.getContextPath()%>/images/manager.png" /> <spring:message code="view.userview.manager"/></a>
-    <%--  Tab list of available tickets views --%>
+  	<div class="helpdeskviewer-menu">
+  	 <ul>
+	    <li><img src="<%=request.getContextPath()%>/images/user.png" /><a ${ (userViewBool eq 'true') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="True"/></portlet:renderURL>">
+	              <spring:message code="view.userview.user"/></a><span>/</span></li>
+	    <li><img src="<%=request.getContextPath()%>/images/manager.png" /><a ${ (userViewBool eq 'false') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="False"/><portlet:param name="selectedTicketFilter" value="ANY"/></portlet:renderURL>">
+	              <spring:message code="view.userview.manager"/></a></li>
+ 	  	
+	  		<li id="home"><img src="<%=request.getContextPath()%>/images/welcome.png" /><a target='blank' href="${linkHome}"><spring:message code="view.link.home"/></a><span>|</span></li>
+	  		<li><img src="<%=request.getContextPath()%>/images/add.png" /><a target='blank' href="${linkAddTicket}"><spring:message code="view.link.question"/></a><span>|</span></li>
+	  		<li><img src="<%=request.getContextPath()%>/images/faq-container.png" /><a target='blank' href="${linkFaq}"><spring:message code="view.link.faq"/></a></li>  	
+	  	</ul>
+	</div>  
+	<%--  Tab list of available tickets views --%>
     <div class="fl-container-flex">
       <ul role="tablist" class="fl-tabs fl-tabs-left">
         <c:forEach var="filter" items="${filters}">

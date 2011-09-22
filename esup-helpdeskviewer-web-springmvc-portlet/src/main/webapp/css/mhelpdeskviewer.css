@@ -2,48 +2,82 @@
 width :100%;
 background:#FFF;
 font-style:normal;
-padding-top: 1.2em;
+padding-top: 
 min-height: 960px;
 color:black;
 }
-.helpdeskviewer-messages-mobile ul{
+.helpdeskviewer-messages-mobile #helpdeskviewer-main ul{
 margin:0.7em;
 padding:0;
-background: url("/HelpdeskViewer/images/bullet_red.png") 0 0.2em no-repeat;
+background: url("/HelpdeskViewer/images/bullet_red.png") 0 0.1em no-repeat;
 }
-.helpdeskviewer-messages-mobile ul li{
+.helpdeskviewer-messages-mobile #helpdeskviewer-main ul li{
 list-style-type: none;
 padding-left:1.1em;
 }
-.helpdeskviewer-messages-mobile ul li span{
+.helpdeskviewer-messages-mobile #helpdeskviewer-main ul li span{
 font-weight:bold;
 color:#344461;
 }
-#nsHvrUserview{
-margin:0 0 15px 6px;
-}
-#helpdeskviewer-main p.alarm{
+.helpdeskviewer-messages-mobile #helpdeskviewer-main p.alarm{
 font-weight:bold;
 color:red;
 text-indent: 12px;
 font-size: 0.8em;
+margin:0;
+}
+.helpdeskviewer-messages-mobile #helpdeskviewer-main a.alarm {
+color:blue;
+margin: 0 0 0 12px;
+padding:0;
 }
 .helpdeskviewer-messages-mobile .bold{
 font-weight: bold;	
 }
-a.helpdeskLink{
+.helpdeskviewer-messages-mobile a.helpdeskLink{
 text-decoration : underline;
+font-size:100%;
+vertical-align:top;
 color:#2758B3;
 }
-h3.trigger{
+.helpdeskviewer-messages-mobile h3.trigger{
 color:#2758B3;
 font-variant :small-caps;
 font-style:normal;
 font-size:1.3em;
 }
-.focus{
+.helpdeskviewer-messages-mobile .focus{
 color :red;
 }
-#helpdeskviewer-main{
+.helpdeskviewer-messages-mobile #helpdeskviewer-main{
 margin-left:10px;
+}
+.helpdeskviewer-messages-mobile .helpdeskviewer-menu{
+margin:0;
+}
+.helpdeskviewer-messages-mobile .helpdeskviewer-menu ul{
+margin: 2px auto 10px auto;
+text-align:center;
+}
+.helpdeskviewer-messages-mobile .helpdeskviewer-menu ul li {
+list-style-type:none;
+display: inline;
+font-weight:bold;
+}
+.helpdeskviewer-messages-mobile .helpdeskviewer-menu ul li span{
+padding:0 0 0 0.5em;
+}
+.helpdeskviewer-messages-mobile .helpdeskviewer-menu li img{
+padding:0 .2em 0 0.1em;
+vertical-align:text-bottom;
+}
+.helpdeskviewer-messages-mobile .helpdeskviewer-menu .bold{
+color: #DD3849 !important;
+}
+.helpdeskviewer-messages-mobile .helpdeskviewer-menu  hr{
+color:#666;
+}
+.helpdeskviewer-messages-mobile .helpdeskviewer-menu h3{
+text-align:center;
+margin:2px auto 0 auto;
 }
