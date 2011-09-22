@@ -1,0 +1,49 @@
+.helpdeskviewer-messages-mobile{
+width :100%;
+background:#FFF;
+font-style:normal;
+padding-top: 1.2em;
+min-height: 960px;
+color:black;
+}
+.helpdeskviewer-messages-mobile ul{
+margin:0.7em;
+padding:0;
+background: url("/HelpdeskViewer/images/bullet_red.png") 0 0.2em no-repeat;
+}
+.helpdeskviewer-messages-mobile ul li{
+list-style-type: none;
+padding-left:1.1em;
+}
+.helpdeskviewer-messages-mobile ul li span{
+font-weight:bold;
+color:#344461;
+}
+#nsHvrUserview{
+margin:0 0 15px 6px;
+}
+#helpdeskviewer-main p.alarm{
+font-weight:bold;
+color:red;
+text-indent: 12px;
+font-size: 0.8em;
+}
+.helpdeskviewer-messages-mobile .bold{
+font-weight: bold;	
+}
+a.helpdeskLink{
+text-decoration : underline;
+color:#2758B3;
+}
+h3.trigger{
+color:#2758B3;
+font-variant :small-caps;
+font-style:normal;
+font-size:1.3em;
+}
+.focus{
+color :red;
+}
+#helpdeskviewer-main{
+margin-left:10px;
+}

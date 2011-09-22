@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>esup-helpdeskviewer</artifactId>
+        <groupId>org.esupportail.helpdeskviewer</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <groupId>org.esupportail.helpdeskviewer</groupId>
+    <artifactId>esup-helpdeskviewer-ws-client</artifactId>
+    <description>WS client</description>
+    <dependencies>
+        <dependency>
+            <groupId>org.esupportail</groupId>
+            <artifactId>esup-commons2-core</artifactId>
+            <version>${esupcommons.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+     <build>
+		<finalName>${pom.artifactId}</finalName>
+		<plugins> 
+			<plugin>
+			  <groupId>org.apache.cxf</groupId>
+			  <artifactId>cxf-codegen-plugin</artifactId>
+			  <executions>
+			    <execution>
+			      <id>generate-sources</id>
+			      <phase>generate-sources</phase>
+			      <configuration>
+				<wsdlOptions>
+				  <wsdlOption>
+				    <wsdl>${basedir}/src/main/etc/Helpdesk.wsdl</wsdl>
+				  </wsdlOption>
+				</wsdlOptions>
+			      </configuration>
+			      <goals>
+				<goal>wsdl2java</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			</plugin>  
+		</plugins>
+	</build>
+</project>

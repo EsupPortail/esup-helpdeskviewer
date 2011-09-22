@@ -1,0 +1,25 @@
+.bold, .helpdeskviewer-unread-ticket{
+font-weight:bold;
+}
+
+.helpdeskviewer-messages-table{
+margin-top:20px;
+width: 100%;
+}
+
+.helpdeskviewer-messages-table th{
+text-align:left;
+color:#000;
+}
+
+.helpdeskviewer-messages-table tr{
+color: #0C77CF;
+}
+
+.alarm{
+font-size: 1.2em;
+font-weight:bold;
+text-align:center;
+margin-top: 20px;
+color: #FF1E00;
+}

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://remote.services.helpdesk.esupportail.org" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:tns="http://remote.services.helpdesk.esupportail.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+  <wsdl:types>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://remote.services.helpdesk.esupportail.org">
+<xsd:element name="getManagerInvolvementFilters">
+<xsd:complexType/>
+</xsd:element>
+<xsd:complexType name="ArrayOfString">
+<xsd:sequence>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="string" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:element name="getManagerInvolvementFiltersResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="tns:ArrayOfString"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="getLastTickets">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="in0" nillable="true" type="xsd:string"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in1" type="xsd:int"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in2" nillable="true" type="xsd:string"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in3" type="xsd:boolean"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:complexType name="ArrayOfSimpleTicketView">
+<xsd:sequence>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="SimpleTicketView" nillable="true" type="tns:SimpleTicketView"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="SimpleTicketView">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="actions" nillable="true" type="tns:ArrayOfSimpleActionView"/>
+<xsd:element minOccurs="0" name="category" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="creation" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="deepLink" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="department" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="label" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="owner" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="status" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="subject" nillable="true" type="xsd:string"/>
+<xsd:element minOccurs="0" name="userInterface" type="xsd:boolean"/>
+<xsd:element minOccurs="0" name="viewed" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="ArrayOfSimpleActionView">
+<xsd:sequence>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="SimpleActionView" nillable="true" type="tns:SimpleActionView"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="SimpleActionView">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="message" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:element name="getLastTicketsResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="tns:ArrayOfSimpleTicketView"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="getVersion">
+<xsd:complexType/>
+</xsd:element>
+<xsd:element name="getVersionResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="getControlPanelManagerInvolvementFilter">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="in0" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="getControlPanelManagerInvolvementFilterResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="cancelTicket">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="in0" nillable="true" type="xsd:string"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in1" type="xsd:long"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in2" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="cancelTicketResponse">
+<xsd:complexType/>
+</xsd:element>
+<xsd:element name="getControlPanelUserInvolvementFilter">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="in0" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="getControlPanelUserInvolvementFilterResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="addTicket">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="in0" nillable="true" type="xsd:string"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in1" type="xsd:long"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in2" type="xsd:long"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in3" nillable="true" type="xsd:string"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in4" nillable="true" type="xsd:string"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in5" nillable="true" type="xsd:string"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in6" type="xsd:int"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in7" nillable="true" type="xsd:string"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in8" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="addTicketResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" type="xsd:long"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="getUserInvolvementFilters">
+<xsd:complexType/>
+</xsd:element>
+<xsd:element name="getUserInvolvementFiltersResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="tns:ArrayOfString"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="closeTicket">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="in0" nillable="true" type="xsd:string"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in1" type="xsd:long"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="in2" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="closeTicketResponse">
+<xsd:complexType/>
+</xsd:element>
+</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getManagerInvolvementFiltersRequest">
+    <wsdl:part name="parameters" element="tns:getManagerInvolvementFilters"/>
+  </wsdl:message>
+  <wsdl:message name="getControlPanelUserInvolvementFilterResponse">
+    <wsdl:part name="parameters" element="tns:getControlPanelUserInvolvementFilterResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getLastTicketsResponse">
+    <wsdl:part name="parameters" element="tns:getLastTicketsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getUserInvolvementFiltersRequest">
+    <wsdl:part name="parameters" element="tns:getUserInvolvementFilters"/>
+  </wsdl:message>
+  <wsdl:message name="closeTicketRequest">
+    <wsdl:part name="parameters" element="tns:closeTicket"/>
+  </wsdl:message>
+  <wsdl:message name="getUserInvolvementFiltersResponse">
+    <wsdl:part name="parameters" element="tns:getUserInvolvementFiltersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="addTicketResponse">
+    <wsdl:part name="parameters" element="tns:addTicketResponse"/>
+  </wsdl:message>
+  <wsdl:message name="addTicketRequest">
+    <wsdl:part name="parameters" element="tns:addTicket"/>
+  </wsdl:message>
+  <wsdl:message name="getManagerInvolvementFiltersResponse">
+    <wsdl:part name="parameters" element="tns:getManagerInvolvementFiltersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="cancelTicketRequest">
+    <wsdl:part name="parameters" element="tns:cancelTicket"/>
+  </wsdl:message>
+  <wsdl:message name="getControlPanelManagerInvolvementFilterRequest">
+    <wsdl:part name="parameters" element="tns:getControlPanelManagerInvolvementFilter"/>
+  </wsdl:message>
+  <wsdl:message name="getVersionResponse">
+    <wsdl:part name="parameters" element="tns:getVersionResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getControlPanelManagerInvolvementFilterResponse">
+    <wsdl:part name="parameters" element="tns:getControlPanelManagerInvolvementFilterResponse"/>
+  </wsdl:message>
+  <wsdl:message name="closeTicketResponse">
+    <wsdl:part name="parameters" element="tns:closeTicketResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getVersionRequest">
+    <wsdl:part name="parameters" element="tns:getVersion"/>
+  </wsdl:message>
+  <wsdl:message name="cancelTicketResponse">
+    <wsdl:part name="parameters" element="tns:cancelTicketResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getControlPanelUserInvolvementFilterRequest">
+    <wsdl:part name="parameters" element="tns:getControlPanelUserInvolvementFilter"/>
+  </wsdl:message>
+  <wsdl:message name="getLastTicketsRequest">
+    <wsdl:part name="parameters" element="tns:getLastTickets"/>
+  </wsdl:message>
+  <wsdl:portType name="HelpdeskPortType">
+    <wsdl:operation name="getManagerInvolvementFilters">
+      <wsdl:input name="getManagerInvolvementFiltersRequest" message="tns:getManagerInvolvementFiltersRequest"/>
+      <wsdl:output name="getManagerInvolvementFiltersResponse" message="tns:getManagerInvolvementFiltersResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getLastTickets">
+      <wsdl:input name="getLastTicketsRequest" message="tns:getLastTicketsRequest"/>
+      <wsdl:output name="getLastTicketsResponse" message="tns:getLastTicketsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getVersion">
+      <wsdl:input name="getVersionRequest" message="tns:getVersionRequest"/>
+      <wsdl:output name="getVersionResponse" message="tns:getVersionResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getControlPanelManagerInvolvementFilter">
+      <wsdl:input name="getControlPanelManagerInvolvementFilterRequest" message="tns:getControlPanelManagerInvolvementFilterRequest"/>
+      <wsdl:output name="getControlPanelManagerInvolvementFilterResponse" message="tns:getControlPanelManagerInvolvementFilterResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="cancelTicket">
+      <wsdl:input name="cancelTicketRequest" message="tns:cancelTicketRequest"/>
+      <wsdl:output name="cancelTicketResponse" message="tns:cancelTicketResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getControlPanelUserInvolvementFilter">
+      <wsdl:input name="getControlPanelUserInvolvementFilterRequest" message="tns:getControlPanelUserInvolvementFilterRequest"/>
+      <wsdl:output name="getControlPanelUserInvolvementFilterResponse" message="tns:getControlPanelUserInvolvementFilterResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="addTicket">
+      <wsdl:input name="addTicketRequest" message="tns:addTicketRequest"/>
+      <wsdl:output name="addTicketResponse" message="tns:addTicketResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getUserInvolvementFilters">
+      <wsdl:input name="getUserInvolvementFiltersRequest" message="tns:getUserInvolvementFiltersRequest"/>
+      <wsdl:output name="getUserInvolvementFiltersResponse" message="tns:getUserInvolvementFiltersResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="closeTicket">
+      <wsdl:input name="closeTicketRequest" message="tns:closeTicketRequest"/>
+      <wsdl:output name="closeTicketResponse" message="tns:closeTicketResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HelpdeskHttpBinding" type="tns:HelpdeskPortType">
+    <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getManagerInvolvementFilters">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getManagerInvolvementFiltersRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getManagerInvolvementFiltersResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLastTickets">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getLastTicketsRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getLastTicketsResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getVersion">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getVersionRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getVersionResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getControlPanelManagerInvolvementFilter">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getControlPanelManagerInvolvementFilterRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getControlPanelManagerInvolvementFilterResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelTicket">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="cancelTicketRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancelTicketResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getControlPanelUserInvolvementFilter">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getControlPanelUserInvolvementFilterRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getControlPanelUserInvolvementFilterResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addTicket">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="addTicketRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addTicketResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUserInvolvementFilters">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getUserInvolvementFiltersRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getUserInvolvementFiltersResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="closeTicket">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="closeTicketRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="closeTicketResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Helpdesk">
+    <wsdl:port name="HelpdeskHttpPort" binding="tns:HelpdeskHttpBinding">
+      <wsdlsoap:address location="https://helpdesk.univ-rouen.fr/esup-helpdesk-urouen-test/xfire/Helpdesk"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
