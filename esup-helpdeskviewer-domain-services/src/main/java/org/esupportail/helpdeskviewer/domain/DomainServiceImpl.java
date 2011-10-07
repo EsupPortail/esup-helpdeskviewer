@@ -20,15 +20,11 @@ import org.esupportail.helpdesk.services.remote.HelpdeskPortType;
 @Service("domainService")
 public class DomainServiceImpl implements DomainService, InitializingBean {
 
-	/**
-	 * For Serialize.
-	 */
 	private static final long serialVersionUID = 5562208937407153456L;
 
-	/**
-	 * For Logging.
-	 */
 	private final Logger logger = new LoggerImpl(this.getClass());
+	
+	HelpdeskPortType helpdesk;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -40,7 +36,14 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 			String uid, int maxTickets, String selectedTicketFilterId,
 			boolean userViewBool) {
 		HelpdeskPortType helpdesk = getHelpdeskWS(wsdlLocation);
-		return helpdesk.getLastTickets(uid, maxTickets, selectedTicketFilterId, userViewBool);
+		logger.debug("Call of WS : helpdesk.getLastTickets(" +
+				uid + ", " +   
+				maxTickets + ", " +
+				selectedTicketFilterId + ", " +
+				userViewBool + ")" );
+		ArrayOfSimpleTicketView tickets = helpdesk.getLastTickets(uid, maxTickets, selectedTicketFilterId, userViewBool);
+		logger.debug("Retrieved " +  tickets.getSimpleTicketView().size() + " tickets");
+		return tickets;
 	}
 
 	@Override
@@ -53,12 +56,14 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	}
 
 	protected HelpdeskPortType getHelpdeskWS(String wsdlLocation) {
-		HelpdeskPortType helpdesk;
-		try {
-			helpdesk = new Helpdesk(new URL(wsdlLocation)).getHelpdeskHttpPort();
-		} catch (MalformedURLException e) {
-			throw new EsupException("pb retieving ws from " + wsdlLocation, e) {
-			};
+		if(helpdesk == null) {
+			try {
+				helpdesk = new Helpdesk(new URL(wsdlLocation)).getHelpdeskHttpPort();
+				logger.info("HelpdeskPortType with wsdlLocation[" + wsdlLocation + "] is created" );
+			} catch (MalformedURLException e) {
+				throw new EsupException("pb retieving ws from " + wsdlLocation, e) {
+				};
+			}
 		}
 		return helpdesk;
 	}

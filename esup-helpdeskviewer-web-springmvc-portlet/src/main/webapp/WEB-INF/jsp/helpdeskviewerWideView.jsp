@@ -8,27 +8,54 @@
   <div class="portlet-section-body">
   	<div class="helpdeskviewer-menu">
   	 <ul>
-	    <li><img src="<%=request.getContextPath()%>/images/user.png" /><a ${ (userViewBool eq 'true') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="True"/></portlet:renderURL>">
-	              <spring:message code="view.userview.user"/></a><span>/</span></li>
-	    <li><img src="<%=request.getContextPath()%>/images/manager.png" /><a ${ (userViewBool eq 'false') ? "class='bold'" : ''} href="<portlet:renderURL portletMode="view"><portlet:param name="userView" value="False"/><portlet:param name="selectedTicketFilter" value="ANY"/></portlet:renderURL>">
-	              <spring:message code="view.userview.manager"/></a></li>
- 	  	
-	  		<li id="home"><img src="<%=request.getContextPath()%>/images/welcome.png" /><a target='blank' href="${linkHome}"><spring:message code="view.link.home"/></a><span>|</span></li>
-	  		<li><img src="<%=request.getContextPath()%>/images/add.png" /><a target='blank' href="${linkAddTicket}"><spring:message code="view.link.question"/></a><span>|</span></li>
-	  		<li><img src="<%=request.getContextPath()%>/images/faq-container.png" /><a target='blank' href="${linkFaq}"><spring:message code="view.link.faq"/></a></li>  	
+          <c:if test="${isManagerViewAble eq 'true'}">
+	   		 <li>
+	   			<img src="<%=request.getContextPath()%>/images/user.png" />
+	   			<portlet:actionURL var="modifyUserViewUrl">
+	   				<portlet:param name="action" value="modifyUserView"/>
+	   				<portlet:param name="userView" value="user"/>
+	   				<portlet:param name="filter" value="ANY"/>
+	   			</portlet:actionURL>
+	   			<a ${ (userView eq 'user') ? "class='bold'" : ''} href="${modifyUserViewUrl}">
+	              <spring:message code="view.userview.user"/></a><span>/</span>
+	         </li>
+	   		 <li>
+	   		 	<portlet:actionURL var="modifyUserViewUrl">
+	   		 		<portlet:param name="action" value="modifyUserView"/>
+	   		 		<portlet:param name="userView" value="manager"/>
+	   		 		<portlet:param name="filter" value="ANY"/>
+	   		 	</portlet:actionURL>
+	    		<img src="<%=request.getContextPath()%>/images/manager.png" />
+	    		<a ${ (userView eq 'manager') ? "class='bold'" : ''} href="${modifyUserViewUrl}">
+	            <spring:message code="view.userview.manager"/></a>
+	         </li>
+ 	  </c:if>
+	  		<li id="home">
+	  			<img src="<%=request.getContextPath()%>/images/welcome.png" />
+	  			<a target='blank' href="${linkHome}"><spring:message code="view.link.home"/></a><span>|</span>
+	  		</li>
+	  		<li>
+	  			<img src="<%=request.getContextPath()%>/images/add.png" />
+	  			<a target='blank' href="${linkAddTicket}"><spring:message code="view.link.question"/></a><span>|</span>
+	  		</li>
+	  		<li>
+	  			<img src="<%=request.getContextPath()%>/images/faq-container.png" />
+	  			<a target='blank' href="${linkFaq}"><spring:message code="view.link.faq"/></a>
+	  		</li>  	
 	  	</ul>
 	</div>  
 	<%--  Tab list of available tickets views --%>
     <div class="fl-container-flex">
       <ul role="tablist" class="fl-tabs fl-tabs-left">
-        <c:forEach var="filter" items="${filters}">
-          <li role="tab" class=${ (filter eq selectedTicketFilterId) ? 'fl-activeTab' : ''}>
-          <portlet:renderURL var="viewSelectedTicket" portletMode="VIEW">
-            <portlet:param name="selectedTicketFilter" value="${filter}"/>   
-            <portlet:param name="userView" value="${userViewBool}"/> 
-          </portlet:renderURL>
-          <a href="${viewSelectedTicket}">
-            <spring:message code="view.tab.${fn:toLowerCase(filter)}"/>
+        <c:forEach var="filterItem" items="${filters}">
+          <li role="tab" class=${ (filterItem eq filter) ? 'fl-activeTab' : ''}>
+          <portlet:actionURL var="modifyUserViewUrl">
+          	<portlet:param name="action" value="modifyUserView"/>
+          	<portlet:param name="userView" value="${userView}"/>   
+            <portlet:param name="filter" value="${filterItem}"/>         
+          </portlet:actionURL>
+          <a href="${modifyUserViewUrl}">
+            <spring:message code="view.tab.${fn:toLowerCase(filterItem)}"/>
           </a>
         </li>
       </c:forEach>
@@ -36,7 +63,10 @@
   </div>
   <c:choose>
   <c:when test="${noTicketsMsg eq '1'}">
-		<p class="alarm"><spring:message code="view.ticket.message.alarm"/> => <a href="${urlHelpdesk}" target="_blank"><spring:message code="view.ticket.message.url"/></a></p>
+		<p class="alarm">
+			<spring:message code="view.ticket.message.alarm"/> => 
+			<a href="${urlHelpdesk}" target="_blank"><spring:message code="view.ticket.message.url"/></a>
+		</p>
   </c:when>
   <c:otherwise>
   <div class="fl-tab-content" role="tabpanel">

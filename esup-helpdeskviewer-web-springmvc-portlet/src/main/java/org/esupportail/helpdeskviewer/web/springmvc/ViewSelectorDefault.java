@@ -44,7 +44,7 @@ import org.springframework.stereotype.Service;
 public class ViewSelectorDefault {
 	
 	private final String HELPDESKVIEWER_WIDE_VIEW = "helpdeskviewerWideView";
-	private final String HELPDESKVIEWER_NARROW_VIEW = "helpdeskviewerNarrowView";
+	private final String HELPDESKVIEWER_NARROW_VIEW = "helpdeskviewerWideView";
 	private final String HELPDESKVIEWER_MOBILE_VIEW = "helpdeskviewerMobileView";
 	
 	private List<Pattern> mobileDeviceRegexes = null;
