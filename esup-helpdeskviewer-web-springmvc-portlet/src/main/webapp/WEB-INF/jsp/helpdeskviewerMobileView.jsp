@@ -1,8 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 
-<%--
 <link rel="stylesheet"  type="text/css" href="<%=request.getContextPath()%>/css/mhelpdeskviewer.css"/>
---%>
 
 <div class="helpdeskviewer-messages-mobile">
 	<div class="helpdeskviewer-menu">

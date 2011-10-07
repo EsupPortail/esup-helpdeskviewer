@@ -1,8 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 
-<%--
 <link rel="stylesheet"  type="text/css" href="<%=request.getContextPath()%>/css/helpdeskviewer.css"/>
---%>
  
 <div class="portlet-section">
   <div class="portlet-section-body">
