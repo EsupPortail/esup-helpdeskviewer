@@ -1,6 +1,8 @@
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 
+<%--
 <link rel="stylesheet"  type="text/css" href="<%=request.getContextPath()%>/css/mhelpdeskviewer.css"/>
+--%>
 
 <div class="helpdeskviewer-messages-mobile">
 	<div class="helpdeskviewer-menu">
@@ -32,7 +34,7 @@
 			<portlet:param name="userView" value="${userView}" />
 		</portlet:actionURL>
 		<form action="${modifyUserViewUrl}" method="POST">
-			<select name="filter" onchange="submit();">
+			<select name="filter" onchange="javascript:this.form.submit();">
 				<c:forEach var="filterItem" items="${filters}">
 				    <c:set var="selected" value="" />
                     <c:if test="${filterItem == filter}">
@@ -41,6 +43,7 @@
                     <option value="${filterItem}" ${selected}><spring:message code="view.tab.${fn:toLowerCase(filterItem)}" /></option>				
 				</c:forEach>
 			<select>
+			<input type="submit" value="Afficher" />
 		</form>
 	    <hr/>
 	</div>
@@ -74,35 +77,9 @@
 								value="${hour[0]}:${hour[1]}" />
 						</li>
 						<li><span><spring:message code="view.thead.status" />
-								:</span> <!-- traduction --> <c:choose>
-								<c:when test="${ticket.status.value=='FREE'}">
-									<spring:message code="view.ticket.status.free" />
-								</c:when>
-								<c:when test="${ticket.status.value=='CANCELLED'}">
-									<spring:message code="view.ticket.status.cancelled" />
-								</c:when>
-								<c:when test="${ticket.status.value=='INCOMPLETE'}">
-									<spring:message code="view.ticket.status.incomplete" />
-								</c:when>
-								<c:when test="${ticket.status.value=='POSTPONED'}">
-									<spring:message code="view.ticket.status.postponed" />
-								</c:when>
-								<c:when test="${ticket.status.value=='INPROGRESS'}">
-									<spring:message code="view.ticket.status.inprogress" />
-								</c:when>
-								<c:when test="${ticket.status.value=='APPROVED'}">
-									<spring:message code="view.ticket.status.approved" />
-								</c:when>
-								<c:when test="${ticket.status.value=='CLOSED'}">
-									<spring:message code="view.ticket.status.closed" />
-								</c:when>
-								<c:when test="${ticket.status.value=='EXPIRED'}">
-									<spring:message code="view.ticket.status.expired" />
-								</c:when>
-								<c:when test="${ticket.status.value=='REFUSED'}">
-									<spring:message code="view.ticket.status.refused" />
-								</c:when>
-							</c:choose></li>
+								:</span>
+								<spring:message code="view.ticket.status.${fn:toLowerCase(ticket.status.value)}" />
+						</li>
 						<li><span><spring:message code="view.thead.owner" />
 								:</span> ${ticket.owner.value}</li>
 					</ul>

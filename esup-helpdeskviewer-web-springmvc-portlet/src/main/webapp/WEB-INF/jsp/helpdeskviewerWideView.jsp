@@ -1,6 +1,8 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 
+<%--
 <link rel="stylesheet"  type="text/css" href="<%=request.getContextPath()%>/css/helpdeskviewer.css"/>
+--%>
  
 <div class="portlet-section">
   <div class="portlet-section-body">
@@ -102,36 +104,7 @@
 	               <c:out  value="${hour[0]}:${hour[1]}" />
 	            </td>	            
 	            <td>
-	              <!-- traduction -->
-	              <c:choose>
-	                <c:when test="${ticket.status.value=='FREE'}">
-	                  <spring:message code="view.ticket.status.free"/>
-	                </c:when>
-	                <c:when test="${ticket.status.value=='CANCELLED'}">
-	                  <spring:message code="view.ticket.status.cancelled"/>
-	                </c:when>
-	                <c:when test="${ticket.status.value=='INCOMPLETE'}">
-	                  <spring:message code="view.ticket.status.incomplete"/>
-	                </c:when>
-	                <c:when test="${ticket.status.value=='POSTPONED'}">
-	                  <spring:message code="view.ticket.status.postponed"/>
-	                </c:when>
-	                <c:when test="${ticket.status.value=='INPROGRESS'}">
-	                  <spring:message code="view.ticket.status.inprogress"/>
-	                </c:when>
-	                <c:when test="${ticket.status.value=='APPROVED'}">
-	                  <spring:message code="view.ticket.status.approved"/>
-	                </c:when>
-	                <c:when test="${ticket.status.value=='CLOSED'}">
-	                  <spring:message code="view.ticket.status.closed"/>
-	                </c:when>
-	                <c:when test="${ticket.status.value=='EXPIRED'}">
-	                  <spring:message code="view.ticket.status.expired"/>
-	                </c:when>
-	                <c:when test="${ticket.status.value=='REFUSED'}">
-	                  <spring:message code="view.ticket.status.refused"/>
-	                </c:when>
-	              </c:choose>
+	                <spring:message code="view.ticket.status.${fn:toLowerCase(ticket.status.value)}"/>
 	            </td>
 	            <td>
 	              ${ticket.owner.value}
