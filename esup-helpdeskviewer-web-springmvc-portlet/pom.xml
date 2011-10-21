@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>esup-helpdeskviewer</artifactId>
 		<groupId>org.esupportail.helpdeskviewer</groupId>
-		<version>0.1.0</version>
+		<version>1.0.0</version>
 	</parent>
 	<groupId>org.esupportail.helpdeskviewer</groupId>
 	<artifactId>esup-helpdeskviewer-web-springmvc-portlet</artifactId>
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>org.esupportail.helpdeskviewer</groupId>
 			<artifactId>esup-helpdeskviewer-domain-services</artifactId>
-			<version>0.1.0</version>
+			<version>1.0.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
