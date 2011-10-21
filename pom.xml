@@ -104,7 +104,22 @@
                         <include>**/*.properties</include> <include>**/*.xml</include> </includes>
                         </scanTargetPattern> </scanTargetPatterns> -->
                 </configuration>
-            </plugin>                    
+            </plugin>      
+                  <plugin>
+	<groupId>com.mycila.maven-license-plugin</groupId>
+	<artifactId>maven-license-plugin</artifactId>
+	<configuration>
+	  <header>./header.txt</header>
+	  <includes>
+	    <include>src/main/java/**</include>
+	    <include>src/main/resources/**</include>
+	    <include>src/main/webapp/**</include>
+	  </includes>
+	  <excludes>
+	   	<exclude>src/main/java/org/esupportail/helpdeskviewer/web/springmvc/ViewSelectorDefault.java</exclude>
+	  </excludes>
+	</configuration>
+      </plugin>              
         </plugins>
     </build>
     <properties>

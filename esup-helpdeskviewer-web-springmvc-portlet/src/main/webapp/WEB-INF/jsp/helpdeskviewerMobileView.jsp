@@ -1,9 +1,36 @@
+<%--
+
+    Copyright (C) 2011 Esup Portail http://www.esup-portail.org
+    Copyright (C) 2011 UNR RUNN http://www.unr-runn.fr
+    @Author (C) 2011 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
+    @Contributor (C) 2011 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+--%>
+
 <%@ include file="/WEB-INF/jsp/include.jsp"%>
 
 <%--
 <link rel="stylesheet"  type="text/css" href="<%=request.getContextPath()%>/css/mhelpdeskviewer.css"/>
 --%>
-
+<c:choose>
+	<c:when test="${target eq 'null'}"> 
+	  <c:set var="targetValue"></c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="targetValue">target='${target}'</c:set>
+	</c:otherwise>
+</c:choose>
 <div class="helpdeskviewer-messages-mobile">
 	<div class="helpdeskviewer-menu">
 		<c:if test="${isManagerViewAble eq 'true'}">
@@ -43,7 +70,7 @@
                     <option value="${filterItem}" ${selected}><spring:message code="view.tab.${fn:toLowerCase(filterItem)}" /></option>				
 				</c:forEach>
 			<select>
-			<input type="submit" value="Afficher" />
+			<input type="submit" value="<spring:message code="view.form.submit" />"/>
 		</form>
 	    <hr/>
 	</div>

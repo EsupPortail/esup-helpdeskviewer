@@ -1,10 +1,27 @@
 /**
- * ESUP-Portail Blank Application - Copyright (c) 2010 ESUP-Portail consortium.
+ * Copyright (C) 2011 Esup Portail http://www.esup-portail.org
+ * Copyright (C) 2011 UNR RUNN http://www.unr-runn.fr
+ * @Author (C) 2011 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
+ * @Contributor (C) 2011 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.esupportail.helpdeskviewer.domain;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.esupportail.commons.exceptions.EsupException;
 import org.esupportail.commons.services.logging.Logger;
@@ -24,7 +41,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 
 	private final Logger logger = new LoggerImpl(this.getClass());
 	
-	HelpdeskPortType helpdesk;
+	Map<String, HelpdeskPortType> helpdesks = new HashMap<String, HelpdeskPortType>();
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -56,9 +73,11 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	}
 
 	protected HelpdeskPortType getHelpdeskWS(String wsdlLocation) {
+		HelpdeskPortType helpdesk = helpdesks.get(wsdlLocation);
 		if(helpdesk == null) {
 			try {
 				helpdesk = new Helpdesk(new URL(wsdlLocation)).getHelpdeskHttpPort();
+				helpdesks.put(wsdlLocation, helpdesk);
 				logger.info("HelpdeskPortType with wsdlLocation[" + wsdlLocation + "] is created" );
 			} catch (MalformedURLException e) {
 				throw new EsupException("pb retieving ws from " + wsdlLocation, e) {

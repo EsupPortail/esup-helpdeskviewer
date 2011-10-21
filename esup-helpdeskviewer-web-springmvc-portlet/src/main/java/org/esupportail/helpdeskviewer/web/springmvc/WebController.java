@@ -1,3 +1,21 @@
+/**
+ * Copyright (C) 2011 Esup Portail http://www.esup-portail.org
+ * Copyright (C) 2011 UNR RUNN http://www.unr-runn.fr
+ * @Author (C) 2011 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
+ * @Contributor (C) 2011 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.esupportail.helpdeskviewer.web.springmvc;
 
 import java.io.IOException;
@@ -45,6 +63,7 @@ public class WebController {
 	private static final String PREF_DEFAULT_USERVIEW = "defaultUserView";
 	private static final String PREF_DEFAULT_FILTER = "defaultFilter";	
 	private static final String PREF_PORTLET_FNAME = "portletFname";
+	private static final String PREF_TARGET = "target";
 	
 	private static final String URL_SERVLET_HOME = "stylesheets/welcome.faces";	
 	private static final String URL_PORTLET_HOME = "uPortal/render.userLayoutRootNode.uP";	
@@ -62,7 +81,10 @@ public class WebController {
 		String maxTickets = prefs.getValue(PREF_MAX_TICKETS, null);
 		String userUidAttr = prefs.getValue(PREF_USER_UID_ATTR, "uid");
 		String portletFname = prefs.getValue(PREF_PORTLET_FNAME, null);
-		log.info("Préférences -> wsdlLocation : "+ wsdlLocation + " maxTickets: " + maxTickets + " userUidAttr: " + userUidAttr);
+		String target = prefs.getValue(PREF_TARGET, "_blank");
+		
+		log.info("Préférences -> wsdlLocation : "+ wsdlLocation + " maxTickets: " 
+				+ maxTickets + " userUidAttr: " + userUidAttr + " portletFname: " + portletFname + " target: " + target);
 		
 		String defaultUserView = prefs.getValue(PREF_DEFAULT_USERVIEW, "user");
 		String defaultFilter = prefs.getValue(PREF_DEFAULT_FILTER, "ANY");	
@@ -119,9 +141,9 @@ public class WebController {
 			 linkFaq=urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=faq");
 		}
 		else{
-			linkHome=urlHelpdesk.concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=welcome");
-			linkAddTicket=urlHelpdesk.concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=addTicket");
-			linkFaq=urlHelpdesk.concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
+			linkHome="/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&args=page=welcome");
+			linkAddTicket="/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=addTicket");
+			linkFaq="/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
 		}
 		
 		model.put("linkHome",linkHome);
@@ -133,6 +155,7 @@ public class WebController {
 		model.put("userView", userView);
 		model.put("filter", filter);
 		model.put("urlHelpdesk", urlHelpdesk);
+		model.put("target", target);
 		return new ModelAndView(viewSelector
 				.getHelpdeskviewerViewName(request), model);
 		
