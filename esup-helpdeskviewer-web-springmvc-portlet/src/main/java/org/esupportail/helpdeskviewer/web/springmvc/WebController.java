@@ -43,9 +43,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.ModelAndView;
 
 
-/**
- * Spring controller which implements the Controller interface.
- */
 @Controller
 public class WebController {
 
@@ -81,20 +78,17 @@ public class WebController {
 		String maxTickets = prefs.getValue(PREF_MAX_TICKETS, null);
 		String userUidAttr = prefs.getValue(PREF_USER_UID_ATTR, "uid");
 		String portletFname = prefs.getValue(PREF_PORTLET_FNAME, null);
-		String target = prefs.getValue(PREF_TARGET, "_blank");
-		
-		log.info("Préférences -> wsdlLocation : "+ wsdlLocation + " maxTickets: " 
+		String target = prefs.getValue(PREF_TARGET, "_blank");		
+		log.info("prefs -> wsdlLocation : "+ wsdlLocation + " maxTickets: " 
 				+ maxTickets + " userUidAttr: " + userUidAttr + " portletFname: " + portletFname + " target: " + target);
-		
-		String defaultUserView = prefs.getValue(PREF_DEFAULT_USERVIEW, "user");
-		String defaultFilter = prefs.getValue(PREF_DEFAULT_FILTER, "ANY");	
-		log.debug("Préférences -> defaultUserView : "+ defaultUserView + " defaultFilter: " + defaultFilter);
 
-		if(userView == null) 
-			userView = defaultUserView;
-		if(filter == null) 
-			filter = defaultFilter;
-		log.info("Préférences+Request -> userView : "+ userView + " filter: " + filter);
+		if(userView == null) {
+			userView = prefs.getValue(PREF_DEFAULT_USERVIEW, "user");
+		}
+		if(filter == null) { 
+			filter = prefs.getValue(PREF_DEFAULT_FILTER, "ANY");	
+		}
+		log.info("Prefs+Request -> userView : "+ userView + " filter: " + filter);
 		boolean userViewBool = "user".equals(userView) ? true : false;
 		
 		Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
@@ -110,7 +104,7 @@ public class WebController {
 		// Test if user can see manager interface
 		// TODO: get user capacities from esup-helpdesk WS
 		boolean isManagerViewAble = !userViewBool;
-		if (!isManagerViewAble && !domainService.getLastTickets(wsdlLocation, uid,	1, "ANY",false).getSimpleTicketView().isEmpty()){
+		if (!isManagerViewAble && !domainService.getLastTickets(wsdlLocation, uid, 1, "ANY", false).getSimpleTicketView().isEmpty()){
 			isManagerViewAble = new Boolean("true").booleanValue();
 		}
 		if(log.isDebugEnabled()) {
@@ -124,10 +118,9 @@ public class WebController {
 				Integer.parseInt(maxTickets), filter,
 				userViewBool);
 		
-
 		ArrayOfString filters = domainService.getInvolvementFilters(wsdlLocation, userViewBool);
 
-		// Message si aucun ticket
+		// Message if no ticket
 		if (tickets.getSimpleTicketView().isEmpty())
 			model.put("noTicketsMsg", "1");
 		
@@ -136,14 +129,14 @@ public class WebController {
 		//Liens menu
 		String linkHome,linkAddTicket,linkFaq;
 		if(portletFname.isEmpty()){
-			 linkHome=urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=welcome");
-			 linkAddTicket=urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=addTicket");
-			 linkFaq=urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=faq");
+			 linkHome = urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=welcome");
+			 linkAddTicket = urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=addTicket");
+			 linkFaq = urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=faq");
 		}
 		else{
-			linkHome="/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&args=page=welcome");
-			linkAddTicket="/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=addTicket");
-			linkFaq="/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
+			linkHome = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=welcome");
+			linkAddTicket = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=addTicket");
+			linkFaq = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
 		}
 		
 		model.put("linkHome",linkHome);
@@ -203,7 +196,7 @@ public class WebController {
 				prefs.store();
 			}
 			
-			// so that it works even if prefs are readonly, we send defaultUserView and defaultFilter like renderParameter to the view
+			// so that it works even if prefs are readonly, we send userView and filter like renderParameter to the view
 			response.setRenderParameter("userView", userView);
 			response.setRenderParameter("filter", filter);
 
