@@ -26,18 +26,6 @@
             </releases>
         </repository>
     </repositories>
-    <distributionManagement>
-        <repository>
-            <id>esup</id>
-            <name>esup-portail</name>
-            <url>https://mvn.esup-portail.org/content/repositories/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>esup</id>
-            <name>esup-portail</name>
-            <url>https://mvn.esup-portail.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
     <dependencies>
     	<dependency>
   		<groupId>org.codehaus.jackson</groupId>
