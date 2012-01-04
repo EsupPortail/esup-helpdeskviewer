@@ -86,5 +86,10 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 		}
 		return helpdesk;
 	}
+	@Override
+	public boolean isDepartmentManager (String wsdlLocation, String uid){
+		HelpdeskPortType helpdesk = getHelpdeskWS(wsdlLocation);
+		return helpdesk.isDepartmentManager(uid);
+	}
 
 }

@@ -54,21 +54,24 @@ public class WebController {
 
 	private Log log = LogFactory.getLog(getClass());
 
-	private static final String PREF_WSDL_LOCATION = "wsdlLocation";
-	private static final String PREF_MAX_TICKETS = "maxTickets";
-	private static final String PREF_USER_UID_ATTR = "userUidAttr";	
-	private static final String PREF_DEFAULT_USERVIEW = "defaultUserView";
-	private static final String PREF_DEFAULT_FILTER = "defaultFilter";	
-	private static final String PREF_PORTLET_FNAME = "portletFname";
-	private static final String PREF_TARGET = "target";
+	public static final String PREF_WSDL_LOCATION = "wsdlLocation";
+	public static final String PREF_MAX_TICKETS = "maxTickets";
+	public static final String PREF_USER_UID_ATTR = "userUidAttr";	
+	public static final String PREF_DEFAULT_USERVIEW = "defaultUserView";
+	public static final String PREF_DEFAULT_FILTER = "defaultFilter";	
+	public static final String PREF_PORTLET_FNAME = "portletFname";
+	public static final String PREF_TARGET = "target";
+	public static final String PREF_TAB_ANY = "display_anyTab";	
+	public static final String PREF_TAB_ALL = "display_allTab";
+	public static final String PREF_HELPDESK_MESSAGE = "helpdeskMessage";
+	public static final String PREF_AUTH_URL = "authUrl";
 	
-	private static final String URL_SERVLET_HOME = "stylesheets/welcome.faces";	
 	private static final String URL_PORTLET_HOME = "uPortal/render.userLayoutRootNode.uP";	
 	
 	@RequestMapping("VIEW")
 	public ModelAndView renderView(@RequestParam(required=false) String userView, 
    		 	@RequestParam(required=false) String filter,
-   		 	RenderRequest request, RenderResponse response) {
+   		 	RenderRequest request, RenderResponse response) throws ReadOnlyException {
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 
@@ -78,9 +81,15 @@ public class WebController {
 		String maxTickets = prefs.getValue(PREF_MAX_TICKETS, null);
 		String userUidAttr = prefs.getValue(PREF_USER_UID_ATTR, "uid");
 		String portletFname = prefs.getValue(PREF_PORTLET_FNAME, null);
-		String target = prefs.getValue(PREF_TARGET, "_blank");		
+		String target = prefs.getValue(PREF_TARGET, "_blank");	
+		String display_anyTab = prefs.getValue(PREF_TAB_ANY, "false");		
+		String display_allTab = prefs.getValue(PREF_TAB_ALL, "false");		
+		String helpdeskMessage = prefs.getValue(PREF_HELPDESK_MESSAGE, null);	
+		String authUrl = prefs.getValue(PREF_AUTH_URL, null);
+		
 		log.info("prefs -> wsdlLocation : "+ wsdlLocation + " maxTickets: " 
-				+ maxTickets + " userUidAttr: " + userUidAttr + " portletFname: " + portletFname + " target: " + target);
+				+ maxTickets + " userUidAttr: " + userUidAttr + " portletFname: " + portletFname + " target: " + target
+				 + "display_anyTab: " + display_anyTab + "display_allTab: " + display_allTab + "helpdeskMessage" + helpdeskMessage + "authUrl" +authUrl);
 
 		if(userView == null) {
 			userView = prefs.getValue(PREF_DEFAULT_USERVIEW, "user");
@@ -88,6 +97,15 @@ public class WebController {
 		if(filter == null) { 
 			filter = prefs.getValue(PREF_DEFAULT_FILTER, "ANY");	
 		}
+		if ((display_anyTab.equalsIgnoreCase("false"))&& (display_allTab.equalsIgnoreCase("false"))){
+			if(userView.equalsIgnoreCase("manager")){
+				filter = "MANAGED";
+			}
+			if(userView.equalsIgnoreCase("user")){
+				filter = "OWNER";
+			}		
+		}
+		
 		log.info("Prefs+Request -> userView : "+ userView + " filter: " + filter);
 		boolean userViewBool = "user".equals(userView) ? true : false;
 		
@@ -98,15 +116,10 @@ public class WebController {
 		}
 		log.debug("Get uid from USER_INFO[" + userUidAttr + "] : " + uid);
 				
-		String[] splitWsdlLocation = wsdlLocation.split("xfire");
-		String	urlHelpdesk = splitWsdlLocation[0];
 		
-		// Test if user can see manager interface
-		// TODO: get user capacities from esup-helpdesk WS
-		boolean isManagerViewAble = !userViewBool;
-		if (!isManagerViewAble && !domainService.getLastTickets(wsdlLocation, uid, 1, "ANY", false).getSimpleTicketView().isEmpty()){
-			isManagerViewAble = new Boolean("true").booleanValue();
-		}
+		// Test if user can see manager interface. Work only with future official version of esup-helpdesk!!!!..(Patched for us)
+		boolean isManagerViewAble= domainService.isDepartmentManager(wsdlLocation, uid);
+
 		if(log.isDebugEnabled()) {
 			if(!isManagerViewAble)
 				log.debug("We don't show manager view possibility because there is no viewable last tickets for this user in helpdesk " +
@@ -128,10 +141,10 @@ public class WebController {
 		
 		//Liens menu
 		String linkHome,linkAddTicket,linkFaq;
-		if(portletFname.isEmpty()){
-			 linkHome = urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=welcome");
-			 linkAddTicket = urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=addTicket");
-			 linkFaq = urlHelpdesk.concat(URL_SERVLET_HOME).concat("?args=page=faq");
+		if(portletFname.isEmpty()){	
+			 linkHome = authUrl.concat("?args=page=welcome");
+			 linkAddTicket = authUrl.concat("?args=page=addTicket");
+			 linkFaq = authUrl.concat("?args=page=faq");		 		 
 		}
 		else{
 			linkHome = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=welcome");
@@ -147,8 +160,12 @@ public class WebController {
 		model.put("isManagerViewAble", isManagerViewAble);
 		model.put("userView", userView);
 		model.put("filter", filter);
-		model.put("urlHelpdesk", urlHelpdesk);
+		model.put("urlHelpdesk", linkHome);
 		model.put("target", target);
+		model.put("display_anyTab", display_anyTab);
+		model.put("display_allTab", display_allTab);
+		model.put("helpdeskMessage",helpdeskMessage);
+		
 		return new ModelAndView(viewSelector
 				.getHelpdeskviewerViewName(request), model);
 		
@@ -182,7 +199,7 @@ public class WebController {
 				prefs.setValue(PREF_DEFAULT_USERVIEW, userView);
 				log.info("Set PREF_DEFAULT_USERVIEW for this user : " + userView);
 				// we re-initialize defaultUserView to "ANY" ...
-				filter = "ANY";
+				//filter = "ANY";
 				prefsMustBeSaved = true;
 			} 
 

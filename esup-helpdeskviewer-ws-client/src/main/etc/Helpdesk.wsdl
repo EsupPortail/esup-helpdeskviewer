@@ -88,6 +88,20 @@
 </xsd:sequence>
 </xsd:complexType>
 </xsd:element>
+<xsd:element name="isDepartmentManager">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="in0" nillable="true" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="isDepartmentManagerResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" type="xsd:boolean"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
 <xsd:element name="cancelTicket">
 <xsd:complexType>
 <xsd:sequence>
@@ -172,6 +186,9 @@
   <wsdl:message name="getUserInvolvementFiltersRequest">
     <wsdl:part name="parameters" element="tns:getUserInvolvementFilters"/>
   </wsdl:message>
+  <wsdl:message name="isDepartmentManagerRequest">
+    <wsdl:part name="parameters" element="tns:isDepartmentManager"/>
+  </wsdl:message>
   <wsdl:message name="closeTicketRequest">
     <wsdl:part name="parameters" element="tns:closeTicket"/>
   </wsdl:message>
@@ -208,6 +225,9 @@
   <wsdl:message name="cancelTicketResponse">
     <wsdl:part name="parameters" element="tns:cancelTicketResponse"/>
   </wsdl:message>
+  <wsdl:message name="isDepartmentManagerResponse">
+    <wsdl:part name="parameters" element="tns:isDepartmentManagerResponse"/>
+  </wsdl:message>
   <wsdl:message name="getControlPanelUserInvolvementFilterRequest">
     <wsdl:part name="parameters" element="tns:getControlPanelUserInvolvementFilter"/>
   </wsdl:message>
@@ -230,6 +250,10 @@
     <wsdl:operation name="getControlPanelManagerInvolvementFilter">
       <wsdl:input name="getControlPanelManagerInvolvementFilterRequest" message="tns:getControlPanelManagerInvolvementFilterRequest"/>
       <wsdl:output name="getControlPanelManagerInvolvementFilterResponse" message="tns:getControlPanelManagerInvolvementFilterResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="isDepartmentManager">
+      <wsdl:input name="isDepartmentManagerRequest" message="tns:isDepartmentManagerRequest"/>
+      <wsdl:output name="isDepartmentManagerResponse" message="tns:isDepartmentManagerResponse"/>
     </wsdl:operation>
     <wsdl:operation name="cancelTicket">
       <wsdl:input name="cancelTicketRequest" message="tns:cancelTicketRequest"/>
@@ -287,6 +311,15 @@
         <wsdlsoap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="getControlPanelManagerInvolvementFilterResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="isDepartmentManager">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="isDepartmentManagerRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="isDepartmentManagerResponse">
         <wsdlsoap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>

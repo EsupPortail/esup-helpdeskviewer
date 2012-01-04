@@ -39,19 +39,33 @@
 					<portlet:actionURL var="modifyUserViewUrl">
 						<portlet:param name="action" value="modifyUserView" />
 						<portlet:param name="userView" value="user" />
-						<portlet:param name="filter" value="ANY" />
+						<c:choose>
+							<c:when test="${(display_anyTab eq 'false') and (display_allTab eq 'false')}">	
+							  <portlet:param name="filter" value="OWNER"/>
+							</c:when>
+							<c:otherwise> 
+							  <portlet:param name="filter" value="ANY"/>
+							</c:otherwise>
+						</c:choose>
 					</portlet:actionURL> <a ${ (userView eq 'user') ? "class='bold'
 					" : ''} href="${modifyUserViewUrl}"> <spring:message
-							code="view.userview.user" /> </a><span>/</span>
+							code="view.user" /> </a><span>/</span>
 				</li>
 				<li><img src="<%=request.getContextPath()%>/images/manager.png" />
 					<portlet:actionURL var="modifyUserViewUrl">
 						<portlet:param name="action" value="modifyUserView" />
 						<portlet:param name="userView" value="manager" />
-						<portlet:param name="filter" value="ANY" />
+						<c:choose>
+							<c:when test="${(display_anyTab eq 'false') and (display_allTab eq 'false')}">	
+							  <portlet:param name="filter" value="MANAGED"/>
+							</c:when>
+							<c:otherwise> 
+							  <portlet:param name="filter" value="ANY"/>
+							</c:otherwise>
+						</c:choose>
 					</portlet:actionURL> <a ${ (userView eq 'manager') ? "class='bold'
 					" : ''} href="${modifyUserViewUrl}"> <spring:message
-							code="view.userview.manager" /> </a>
+							code="view.manager" /> </a>
 				</li>
 			</ul>
 		</c:if>
@@ -63,14 +77,30 @@
 		<form action="${modifyUserViewUrl}" method="POST">
 			<select name="filter" onchange="javascript:this.form.submit();">
 				<c:forEach var="filterItem" items="${filters}">
-				    <c:set var="selected" value="" />
+				  <c:set var="selected" value="" />
                     <c:if test="${filterItem == filter}">
                         <c:set var="selected" value='selected="selected"' />
                     </c:if>
-                    <option value="${filterItem}" ${selected}><spring:message code="view.tab.${fn:toLowerCase(filterItem)}" /></option>				
+				 <c:choose>
+				  <c:when test="${(display_anyTab eq 'true') and (display_allTab eq 'false')}">	 
+				   <c:if test="${(filterItem eq 'ANY') || (filterItem eq 'OWNER')||(filterItem eq 'MANAGED')}"> 				    
+                    <option value="${filterItem}" ${selected}>
+						<spring:message code="tab.${fn:toLowerCase(filterItem)}"/>
+                    </option>			 	
+				   </c:if>
+				  </c:when>         
+				  <c:when test="${display_allTab eq 'true'}">
+				   	<option value="${filterItem}" ${selected}><spring:message code="tab.${fn:toLowerCase(filterItem)}"/></option>
+				  </c:when>          
+                  <c:otherwise>  
+                  	<c:if test="${(filterItem eq 'OWNER')||(filterItem eq 'MANAGED')}"> 
+                  		<option value="${filterItem}" ${selected}><spring:message code="tab.${fn:toLowerCase(filterItem)}"/></option>
+                  	</c:if>
+				  </c:otherwise>
+				 </c:choose>   
 				</c:forEach>
 			<select>
-			<input type="submit" value="<spring:message code="view.form.submit" />"/>
+			<input type="submit" value="<spring:message code="form.submit" />"/>
 		</form>
 	    <hr/>
 	</div>
@@ -80,34 +110,33 @@
 		<c:choose>
 			<c:when test="${noTicketsMsg eq '1'}">
 				<p class="alarm">
-					<spring:message code="view.ticket.message.alarm" />
+					<spring:message code="ticket.message.alarm" />
 				</p>
-				<a class="alarm" href="${urlHelpdesk}" target="_blank"> => <spring:message
-						code="view.ticket.message.url" /> </a>
+				<a class="alarm" href="${urlHelpdesk}" target="_blank"> => ${helpdeskMessage}</a>
 			</c:when>
 			<c:otherwise>
 				<c:forEach var="ticket" items="${tickets}">
 					<ul>
-						<li><span><spring:message code="view.thead.subject" />
+						<li><span><spring:message code="tab.thead.subject" />
 								:</span> <a class="helpdeskLink" target='blank'
 							href='${ticket.deepLink.value}'>${ticket.label.value}</a>
 						</li>
-						<li><span><spring:message code="view.thead.category" />
+						<li><span><spring:message code="tab.thead.category" />
 								:</span> ${ticket.category.value}</li>
-						<li><span><spring:message code="view.thead.department" />
+						<li><span><spring:message code="tab.thead.department" />
 								:</span> ${ticket.department.value}</li>
-						<li><span><spring:message code="view.thead.creation" />
+						<li><span><spring:message code="tab.thead.creation" />
 								:</span> <c:set var="date"
 								value="${fn:split(ticket.creation.value, ' ')}" /> <c:out
 								value="${date[0]} ${date[1]} ${date[2]}" /> <c:set var="hour"
 								value="${fn:split(date[3], ':')}" /> <c:out
 								value="${hour[0]}:${hour[1]}" />
 						</li>
-						<li><span><spring:message code="view.thead.status" />
+						<li><span><spring:message code="tab.thead.status" />
 								:</span>
-								<spring:message code="view.ticket.status.${fn:toLowerCase(ticket.status.value)}" />
+								<spring:message code="ticket.status.${fn:toLowerCase(ticket.status.value)}" />
 						</li>
-						<li><span><spring:message code="view.thead.owner" />
+						<li><span><spring:message code="tab.thead.owner" />
 								:</span> ${ticket.owner.value}</li>
 					</ul>
 				</c:forEach>

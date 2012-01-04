@@ -79,13 +79,33 @@
             <preference>
                 <name>defaultFilter</name>
                 <value>ANY</value>
-                <read-only>true</read-only>
+                <read-only>false</read-only>
             </preference>     
             <preference>
                 <name>target</name>
                 <value>_blank</value>
                 <read-only>true</read-only>
-            </preference>                                 
+            </preference>          
+           <preference>
+                <name>display_anyTab</name>
+                <value>false</value>
+                <read-only>false</read-only>
+            </preference> 
+            <preference>
+                <name>display_allTab</name>
+                <value>false</value>
+                <read-only>false</read-only>
+            </preference> 
+            <preference>
+                <name>helpdeskMessage</name>
+                <value>Aucun ticket pour cette sélection, merci d'accéder directement à la plateforme d'assistance</value>
+                <read-only>true</read-only>
+            </preference> 
+            <preference>
+                <name>authUrl</name>
+                <value></value>
+                <read-only>true</read-only>
+            </preference>           
         </portlet-preferences>
     
     </portlet>

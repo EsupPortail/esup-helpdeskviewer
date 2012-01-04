@@ -31,5 +31,7 @@ public interface DomainService extends Serializable {
 			boolean userViewBool);
 	
 	ArrayOfString getInvolvementFilters(String wsdlLocation, boolean userViewBool);
+	
+	boolean isDepartmentManager (String wsdlLocation,String uid);
 
 }

@@ -22,7 +22,7 @@
 
 <div class="portlet-title">
   <h2>
-    <spring:message code="view.error.title"/>
+    <spring:message code="error.title"/>
   </h2>
 </div>
 
@@ -30,7 +30,7 @@
 
   <div class="portlet-section-body">
     <p>
-     <spring:message code="view.error.message"/>
+     <spring:message code="error.message"/>
     </p>
   </div>
 
