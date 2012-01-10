@@ -1,14 +1,9 @@
 <%--
 
-    Copyright (C) 2011 Esup Portail http://www.esup-portail.org
-    Copyright (C) 2011 UNR RUNN http://www.unr-runn.fr
-    Copyright (C) 2011 RECIA http://www.recia.fr
-    @Author (C) 2011 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
-    @Contributor (C) 2011 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
-    @Contributor (C) 2011 Julien Marchal <Julien.Marchal@univ-nancy2.fr>
-    @Contributor (C) 2011 Julien Gribonvald <Julien.Gribonvald@recia.fr>
-    @Contributor (C) 2011 David Clarke <david.clarke@anu.edu.au>
-    @Contributor (C) 2011 BULL http://www.bull.fr
+    Copyright (C) 2011-2012 Esup Portail http://www.esup-portail.org
+    Copyright (C) 2011-2012 UNR RUNN http://www.unr-runn.fr
+    @Author (C) 2011-2012 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
+    @Contributor (C) 2011-2012 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -43,34 +38,43 @@
 		<spring:message code="edit.title" />
 	</h2>
 </div>
-
-<span><spring:message code="edit.message"/></span>
-
+<c:if test="${roViewMode eq 'true'}">
+	<span><spring:message code="edit.message"/></span>
+</c:if>
 <div class="portlet-section">
-
 	<div class="portlet-section-body">
-	  
+	  <div class="helpdeskviewer-edit">	
 	  <portlet:actionURL var="updatePreferencesUrl">
     	<portlet:param name="action" value="updatePreferences"/>
   	  </portlet:actionURL>
 	
 	  <form id="${n}updatePreferences" class="updatePreferences" action="${updatePreferencesUrl}" method="post">
-
 			<c:if test="${roViewMode eq 'true'}">
 				<fieldset>
-					<legend><spring:message code="edit.mode"/></legend>
+					<legend><spring:message code="edit.mode.user"/></legend>
 					<ul>
-						<li>
-							<input type="radio" name="viewMode" value="mine" ${viewMode == 'mine'? 'checked="checked"' : ''}/><spring:message code="edit.viewMode.mine"/>
-						</li>
-						<li>
-							<input type="radio" name="viewMode" value="any" ${viewMode == 'any'? 'checked="checked"' : ''}/><spring:message code="edit.viewMode.any"/>
-						</li>
-						<li>
-							<input type="radio" name="viewMode" value="all" ${viewMode == 'all'? 'checked="checked"' : ''}/><spring:message code="edit.viewMode.all"/>
-						</li>									
+						<c:forEach var="userTab" items="${userTabPrefs}">				
+							<li>
+								<input type="checkbox" name="viewUserBox" value="${ fn:substringBefore(userTab, '.') }"  
+								<c:if test="${fn:contains(userTab, 'check')}"> checked="checked"</c:if> /><spring:message code="tab.${ fn:substringBefore(userTab, '.') }"/>
+							</li>	
+						</c:forEach>			
 					</ul>
 				</fieldset>
+		   <c:if test="${isManagerViewAble eq 'true'}">
+				<fieldset>
+					<legend><spring:message code="edit.mode.manager"/></legend>
+					<ul>
+						<c:forEach var="managerTab" items="${managerTabPrefs}">				
+							<li>
+								<input type="checkbox" name="viewManagerBox" value="${ fn:substringBefore(managerTab, '.') }"  
+								<c:if test="${fn:contains(managerTab, 'check')}"> checked="checked"</c:if> /><spring:message code="tab.${ fn:substringBefore(managerTab, '.') }"/>
+							</li>
+						</c:forEach>
+					</ul>
+				</fieldset>	
+			</c:if>			
+				<input type="hidden" name="viewMode" value="enable" />
 			</c:if>
 			<c:if test="${roViewMode eq 'false'}">
 				<p></p><spring:message code="edit.viewMode.disable"/></p>
@@ -78,7 +82,6 @@
 			</c:if>
 			<input type="submit" value="<spring:message code="edit.done"/>" class="portlet-form-button"/>
 		</form>
-
 	</div>
-
+  </div>
 </div>

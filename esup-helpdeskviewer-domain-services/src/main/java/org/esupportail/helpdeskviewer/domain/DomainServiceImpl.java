@@ -1,8 +1,8 @@
 /**
- * Copyright (C) 2011 Esup Portail http://www.esup-portail.org
- * Copyright (C) 2011 UNR RUNN http://www.unr-runn.fr
- * @Author (C) 2011 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
- * @Contributor (C) 2011 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
+ * Copyright (C) 2011-2012 Esup Portail http://www.esup-portail.org
+ * Copyright (C) 2011-2012 UNR RUNN http://www.unr-runn.fr
+ * @Author (C) 2011-2012 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
+ * @Contributor (C) 2011-2012 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

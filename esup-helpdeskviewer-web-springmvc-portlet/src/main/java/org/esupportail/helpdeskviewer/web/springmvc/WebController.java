@@ -1,8 +1,8 @@
 /**
- * Copyright (C) 2011 Esup Portail http://www.esup-portail.org
- * Copyright (C) 2011 UNR RUNN http://www.unr-runn.fr
- * @Author (C) 2011 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
- * @Contributor (C) 2011 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
+ * Copyright (C) 2011-2012 Esup Portail http://www.esup-portail.org
+ * Copyright (C) 2011-2012 UNR RUNN http://www.unr-runn.fr
+ * @Author (C) 2011-2012 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
+ * @Contributor (C) 2011-2012 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 package org.esupportail.helpdeskviewer.web.springmvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -37,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.esupportail.helpdesk.services.remote.ArrayOfSimpleTicketView;
 import org.esupportail.helpdesk.services.remote.ArrayOfString;
 import org.esupportail.helpdeskviewer.domain.DomainService;
+import org.esupportail.helpdeskviewer.web.springmvc.ViewSelectorDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +51,7 @@ public class WebController {
 
 	@Resource
 	protected DomainService domainService;
-	
+
 	@Resource
 	protected ViewSelectorDefault viewSelector;
 
@@ -61,8 +64,8 @@ public class WebController {
 	public static final String PREF_DEFAULT_FILTER = "defaultFilter";	
 	public static final String PREF_PORTLET_FNAME = "portletFname";
 	public static final String PREF_TARGET = "target";
-	public static final String PREF_TAB_ANY = "display_anyTab";	
-	public static final String PREF_TAB_ALL = "display_allTab";
+	public static final String PREF_TAB_USER = "display_userTab";	
+	public static final String PREF_TAB_MANAGER = "display_managerTab";	
 	public static final String PREF_HELPDESK_MESSAGE = "helpdeskMessage";
 	public static final String PREF_AUTH_URL = "authUrl";
 	
@@ -81,35 +84,43 @@ public class WebController {
 		String maxTickets = prefs.getValue(PREF_MAX_TICKETS, null);
 		String userUidAttr = prefs.getValue(PREF_USER_UID_ATTR, "uid");
 		String portletFname = prefs.getValue(PREF_PORTLET_FNAME, null);
-		String target = prefs.getValue(PREF_TARGET, "_blank");	
-		String display_anyTab = prefs.getValue(PREF_TAB_ANY, "false");		
-		String display_allTab = prefs.getValue(PREF_TAB_ALL, "false");		
+		String target = prefs.getValue(PREF_TARGET, "_blank");		
+		String[] prefsTabManagerTickets  = prefs.getValues("display_managerTab",null);
+		String[] prefsTabUserTickets  = prefs.getValues("display_userTab", null);
 		String helpdeskMessage = prefs.getValue(PREF_HELPDESK_MESSAGE, null);	
 		String authUrl = prefs.getValue(PREF_AUTH_URL, null);
 		
 		log.info("prefs -> wsdlLocation : "+ wsdlLocation + " maxTickets: " 
 				+ maxTickets + " userUidAttr: " + userUidAttr + " portletFname: " + portletFname + " target: " + target
-				 + "display_anyTab: " + display_anyTab + "display_allTab: " + display_allTab + "helpdeskMessage" + helpdeskMessage + "authUrl" +authUrl);
+				 + " prefsTabUserTickets: " + prefsTabUserTickets + " prefsTabManagerTickets: " + prefsTabManagerTickets + " helpdeskMessage: " + helpdeskMessage + " authUrl: " +authUrl);
 
 		if(userView == null) {
 			userView = prefs.getValue(PREF_DEFAULT_USERVIEW, "user");
 		}
+
+		if(prefsTabUserTickets==null){
+			String[] defUserValues = {"owner"};
+			prefsTabUserTickets = prefs.getValues(PREF_TAB_USER, defUserValues);
+		}
+		
+		if(prefsTabManagerTickets==null){
+			String[] defManagerValues = {"managed"};
+			prefsTabManagerTickets = prefs.getValues(PREF_TAB_MANAGER, defManagerValues);
+		}
+		
 		if(filter == null) { 
-			filter = prefs.getValue(PREF_DEFAULT_FILTER, "ANY");	
-		}
-		if ((display_anyTab.equalsIgnoreCase("false"))&& (display_allTab.equalsIgnoreCase("false"))){
-			if(userView.equalsIgnoreCase("manager")){
-				filter = "MANAGED";
+			if(userView.equals("user")){
+				filter = prefsTabUserTickets[0].toUpperCase();	
 			}
-			if(userView.equalsIgnoreCase("user")){
-				filter = "OWNER";
-			}		
+			if(userView.equals("manager")){
+				filter = prefsTabManagerTickets[0].toUpperCase();
+			}
 		}
-		
-		log.info("Prefs+Request -> userView : "+ userView + " filter: " + filter);
+	 
+		log.info("Prefs+Request -> userView : "+ userView + " filter: " + filter + " prefsTabManagerTickets: " + prefsTabManagerTickets + " prefsTabUserTickets : " + prefsTabUserTickets);
 		boolean userViewBool = "user".equals(userView) ? true : false;
-		
-		Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
+
+ 		Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
 		String uid = (String) userInfo.get(userUidAttr);
 		if(uid == null){
 			log.error("Can't get uid of user !");
@@ -117,9 +128,10 @@ public class WebController {
 		log.debug("Get uid from USER_INFO[" + userUidAttr + "] : " + uid);
 				
 		
-		// Test if user can see manager interface. Work only with future official version of esup-helpdesk!!!!..(Patched for us)
-		boolean isManagerViewAble= domainService.isDepartmentManager(wsdlLocation, uid);
-
+		// Test if user can see manager interface. Work only with esup-helpdesk 3.29.7 or more
+		boolean isManagerViewAble= domainService.isDepartmentManager(wsdlLocation, uid);		
+		PortletSession session = request.getPortletSession();
+		session.setAttribute("isManagerViewAble", isManagerViewAble);
 		if(log.isDebugEnabled()) {
 			if(!isManagerViewAble)
 				log.debug("We don't show manager view possibility because there is no viewable last tickets for this user in helpdesk " +
@@ -132,6 +144,25 @@ public class WebController {
 				userViewBool);
 		
 		ArrayOfString filters = domainService.getInvolvementFilters(wsdlLocation, userViewBool);
+		
+    	
+		ArrayList<String> tabTickets = new ArrayList<String>();		
+		if(userViewBool){
+			for (int i = 0; i < prefsTabUserTickets.length; i++){
+				tabTickets.add(prefsTabUserTickets[i].toUpperCase());
+			}
+		}
+		else{
+			for (int i = 0; i < prefsTabManagerTickets.length; i++){
+				tabTickets.add(prefsTabManagerTickets[i].toUpperCase());
+			}			
+		}
+		if(filters.getString().containsAll(tabTickets)){
+			log.info("display_userTab preference has right items");
+		}
+		else{
+			log.error("display_userTab preference required right items");
+		}
 
 		// Message if no ticket
 		if (tickets.getSimpleTicketView().isEmpty())
@@ -151,19 +182,20 @@ public class WebController {
 			linkAddTicket = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=addTicket");
 			linkFaq = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
 		}
-		
+
+		model.put("tabTickets",tabTickets);
 		model.put("linkHome",linkHome);
 		model.put("linkAddTicket",linkAddTicket);
 		model.put("linkFaq",linkFaq);
 		model.put("tickets", tickets.getSimpleTicketView());
 		model.put("filters", filters.getString());
+		model.put("defaultFilterUser", prefsTabUserTickets[0].toUpperCase());
+		model.put("defaultFilterManager", prefsTabManagerTickets[0].toUpperCase());
 		model.put("isManagerViewAble", isManagerViewAble);
 		model.put("userView", userView);
 		model.put("filter", filter);
 		model.put("urlHelpdesk", linkHome);
 		model.put("target", target);
-		model.put("display_anyTab", display_anyTab);
-		model.put("display_allTab", display_allTab);
 		model.put("helpdeskMessage",helpdeskMessage);
 		
 		return new ModelAndView(viewSelector
@@ -198,8 +230,6 @@ public class WebController {
 			if(!prefs.isReadOnly(PREF_DEFAULT_USERVIEW) && !userView.equals(prefs.getValue(PREF_DEFAULT_USERVIEW, null))) {
 				prefs.setValue(PREF_DEFAULT_USERVIEW, userView);
 				log.info("Set PREF_DEFAULT_USERVIEW for this user : " + userView);
-				// we re-initialize defaultUserView to "ANY" ...
-				//filter = "ANY";
 				prefsMustBeSaved = true;
 			} 
 
@@ -216,6 +246,5 @@ public class WebController {
 			// so that it works even if prefs are readonly, we send userView and filter like renderParameter to the view
 			response.setRenderParameter("userView", userView);
 			response.setRenderParameter("filter", filter);
-
 	 }
 }

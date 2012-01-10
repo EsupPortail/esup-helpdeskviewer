@@ -1,9 +1,9 @@
 <%--
 
-    Copyright (C) 2011 Esup Portail http://www.esup-portail.org
-    Copyright (C) 2011 UNR RUNN http://www.unr-runn.fr
-    @Author (C) 2011 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
-    @Contributor (C) 2011 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
+    Copyright (C) 2011-2012 Esup Portail http://www.esup-portail.org
+    Copyright (C) 2011-2012 UNR RUNN http://www.unr-runn.fr
+    @Author (C) 2011-2012 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
+    @Contributor (C) 2011-2012 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -33,71 +33,42 @@
 </c:choose>
 <div class="helpdeskviewer-messages-mobile">
 	<div class="helpdeskviewer-menu">
-		<c:if test="${isManagerViewAble eq 'true'}">
-			<ul>
-				<li><img src="<%=request.getContextPath()%>/images/user.png" />
-					<portlet:actionURL var="modifyUserViewUrl">
-						<portlet:param name="action" value="modifyUserView" />
-						<portlet:param name="userView" value="user" />
-						<c:choose>
-							<c:when test="${(display_anyTab eq 'false') and (display_allTab eq 'false')}">	
-							  <portlet:param name="filter" value="OWNER"/>
-							</c:when>
-							<c:otherwise> 
-							  <portlet:param name="filter" value="ANY"/>
-							</c:otherwise>
-						</c:choose>
-					</portlet:actionURL> <a ${ (userView eq 'user') ? "class='bold'
-					" : ''} href="${modifyUserViewUrl}"> <spring:message
-							code="view.user" /> </a><span>/</span>
-				</li>
-				<li><img src="<%=request.getContextPath()%>/images/manager.png" />
-					<portlet:actionURL var="modifyUserViewUrl">
-						<portlet:param name="action" value="modifyUserView" />
-						<portlet:param name="userView" value="manager" />
-						<c:choose>
-							<c:when test="${(display_anyTab eq 'false') and (display_allTab eq 'false')}">	
-							  <portlet:param name="filter" value="MANAGED"/>
-							</c:when>
-							<c:otherwise> 
-							  <portlet:param name="filter" value="ANY"/>
-							</c:otherwise>
-						</c:choose>
-					</portlet:actionURL> <a ${ (userView eq 'manager') ? "class='bold'
-					" : ''} href="${modifyUserViewUrl}"> <spring:message
-							code="view.manager" /> </a>
-				</li>
-			</ul>
-		</c:if>
-
+		<ul>
+          <c:if test="${isManagerViewAble eq 'true'}"> 
+	   		 <li>
+	   			<img src="<%=request.getContextPath()%>/images/user.png" />
+	   			<portlet:actionURL var="modifyUserViewUrl">
+	   				<portlet:param name="action" value="modifyUserView"/>
+	   				<portlet:param name="userView" value="user"/>
+					<portlet:param name="filter" value="${defaultFilterUser}"/>
+	   			</portlet:actionURL>
+	   			<a ${ (userView eq 'user') ? "class='bold'" : ''} href="${modifyUserViewUrl}">
+	              <spring:message code="view.user"/></a><span>/</span>
+	         </li>
+	   		 <li>
+	   		 	<portlet:actionURL var="modifyUserViewUrl">
+	   		 		<portlet:param name="action" value="modifyUserView"/>
+	   		 		<portlet:param name="userView" value="manager"/>
+				    <portlet:param name="filter" value="${defaultFilterManager}"/>
+	   		 	</portlet:actionURL>
+	    		<img src="<%=request.getContextPath()%>/images/manager.png" />
+	    		<a ${ (userView eq 'manager') ? "class='bold'" : ''} href="${modifyUserViewUrl}">
+	            <spring:message code="view.manager"/></a>
+	         </li>
+ 	  	   </c:if>  
+		</ul>
 		<portlet:actionURL var="modifyUserViewUrl">
 			<portlet:param name="action" value="modifyUserView" />
 			<portlet:param name="userView" value="${userView}" />
 		</portlet:actionURL>
 		<form action="${modifyUserViewUrl}" method="POST">
 			<select name="filter" onchange="javascript:this.form.submit();">
-				<c:forEach var="filterItem" items="${filters}">
+				<c:forEach var="filterItem" items="${tabTickets}">
 				  <c:set var="selected" value="" />
                     <c:if test="${filterItem == filter}">
                         <c:set var="selected" value='selected="selected"' />
                     </c:if>
-				 <c:choose>
-				  <c:when test="${(display_anyTab eq 'true') and (display_allTab eq 'false')}">	 
-				   <c:if test="${(filterItem eq 'ANY') || (filterItem eq 'OWNER')||(filterItem eq 'MANAGED')}"> 				    
-                    <option value="${filterItem}" ${selected}>
-						<spring:message code="tab.${fn:toLowerCase(filterItem)}"/>
-                    </option>			 	
-				   </c:if>
-				  </c:when>         
-				  <c:when test="${display_allTab eq 'true'}">
-				   	<option value="${filterItem}" ${selected}><spring:message code="tab.${fn:toLowerCase(filterItem)}"/></option>
-				  </c:when>          
-                  <c:otherwise>  
-                  	<c:if test="${(filterItem eq 'OWNER')||(filterItem eq 'MANAGED')}"> 
-                  		<option value="${filterItem}" ${selected}><spring:message code="tab.${fn:toLowerCase(filterItem)}"/></option>
-                  	</c:if>
-				  </c:otherwise>
-				 </c:choose>   
+                    <option value="${filterItem}" /><spring:message code="tab.${fn:toLowerCase(filterItem)}"/></option>  
 				</c:forEach>
 			<select>
 			<input type="submit" value="<spring:message code="form.submit" />"/>
@@ -109,10 +80,7 @@
 	
 		<c:choose>
 			<c:when test="${noTicketsMsg eq '1'}">
-				<p class="alarm">
-					<spring:message code="ticket.message.alarm" />
-				</p>
-				<a class="alarm" href="${urlHelpdesk}" target="_blank"> => ${helpdeskMessage}</a>
+				<p></p><a class="alarm" href="${urlHelpdesk}" target="_blank"> => ${helpdeskMessage}</a></p>
 			</c:when>
 			<c:otherwise>
 				<c:forEach var="ticket" items="${tickets}">

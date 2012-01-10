@@ -1,9 +1,9 @@
 <%--
 
-    Copyright (C) 2011 Esup Portail http://www.esup-portail.org
-    Copyright (C) 2011 UNR RUNN http://www.unr-runn.fr
-    @Author (C) 2011 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
-    @Contributor (C) 2011 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
+    Copyright (C) 2011-2012 Esup Portail http://www.esup-portail.org
+    Copyright (C) 2011-2012 UNR RUNN http://www.unr-runn.fr
+    @Author (C) 2011-2012 Jean-Pierre Tran <Jean-Pierre.Tran@univ-rouen.fr>
+    @Contributor (C) 2011-2012 Vincent Bonamy <Vincent.Bonamy@univ-rouen.fr>
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -42,14 +42,7 @@
 	   			<portlet:actionURL var="modifyUserViewUrl">
 	   				<portlet:param name="action" value="modifyUserView"/>
 	   				<portlet:param name="userView" value="user"/>
-					<c:choose>
-						<c:when test="${(display_anyTab eq 'false') and (display_allTab eq 'false')}">	
-						  <portlet:param name="filter" value="OWNER"/>
-						</c:when>
-						<c:otherwise> 
-						  <portlet:param name="filter" value="ANY"/>
-						</c:otherwise>
-					</c:choose>
+					<portlet:param name="filter" value="${defaultFilterUser}"/>
 	   			</portlet:actionURL>
 	   			<a ${ (userView eq 'user') ? "class='bold'" : ''} href="${modifyUserViewUrl}">
 	              <spring:message code="view.user"/></a><span>/</span>
@@ -58,14 +51,7 @@
 	   		 	<portlet:actionURL var="modifyUserViewUrl">
 	   		 		<portlet:param name="action" value="modifyUserView"/>
 	   		 		<portlet:param name="userView" value="manager"/>
-					<c:choose>
-						<c:when test="${(display_anyTab eq 'false') and (display_allTab eq 'false')}">	
-						  <portlet:param name="filter" value="MANAGED"/>
-						</c:when>
-						<c:otherwise> 
-						  <portlet:param name="filter" value="ANY"/>
-						</c:otherwise>
-					</c:choose>
+				    <portlet:param name="filter" value="${defaultFilterManager}"/>
 	   		 	</portlet:actionURL>
 	    		<img src="<%=request.getContextPath()%>/images/manager.png" />
 	    		<a ${ (userView eq 'manager') ? "class='bold'" : ''} href="${modifyUserViewUrl}">
@@ -90,10 +76,7 @@
 
   <div class="helpdeskviewer-messages">
       <ul class="fl-tabs fl-tabs-left">
-        <c:forEach var="filterItem" items="${filters}">
-		  <c:choose>
-		  <c:when test="${(display_anyTab eq 'true') and (display_allTab eq 'false')}">	 
-		  	 <c:if test="${(filterItem eq 'ANY') || (filterItem eq 'OWNER')||(filterItem eq 'MANAGED')}"> 
+        <c:forEach var="filterItem" items="${tabTickets}">
 			 <li class=${ (filterItem eq filter) ? 'fl-activeTab' : ''}>
 		          <portlet:actionURL var="modifyUserViewUrl">
 		          	<portlet:param name="action" value="modifyUserView"/>
@@ -102,33 +85,6 @@
 		          </portlet:actionURL>
 		          <a href="${modifyUserViewUrl}"><spring:message code="tab.${fn:toLowerCase(filterItem)}"/></a>
 		      </li>
-		     </c:if>
-		  </c:when>
-		  <c:when test="${display_allTab eq 'true'}">	 
-			 <li class=${ (filterItem eq filter) ? 'fl-activeTab' : ''}>
-		          <portlet:actionURL var="modifyUserViewUrl">
-		          	<portlet:param name="action" value="modifyUserView"/>
-		          	<portlet:param name="userView" value="${userView}"/>   
-		            <portlet:param name="filter" value="${filterItem}"/>         
-		          </portlet:actionURL>
-		          <a href="${modifyUserViewUrl}">
-		            <spring:message code="tab.${fn:toLowerCase(filterItem)}"/>
-		          </a>
-		      </li>
-		  </c:when>
-		  <c:otherwise>    
-		  	  <c:if test="${(filterItem eq 'OWNER')||(filterItem eq 'MANAGED')}"> 
-		          <li class="fl-activeTab">
-		          <portlet:actionURL var="modifyUserViewUrl">
-		          	<portlet:param name="action" value="modifyUserView"/>
-		          	<portlet:param name="userView" value="${userView}"/>   
-		            <portlet:param name="filter" value="${filterItem}"/>         
-		          </portlet:actionURL>
-		          <a href="${modifyUserViewUrl}"><spring:message code="tab.${fn:toLowerCase(filterItem)}"/></a>
-		        </li>
-		      </c:if>
-		  </c:otherwise>
-		</c:choose>
       </c:forEach>
     </ul>
   </div>
