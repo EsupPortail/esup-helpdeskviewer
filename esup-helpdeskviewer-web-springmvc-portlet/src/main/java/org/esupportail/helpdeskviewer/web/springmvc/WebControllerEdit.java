@@ -22,6 +22,7 @@ package org.esupportail.helpdeskviewer.web.springmvc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import javax.annotation.Resource;
 import javax.portlet.ActionRequest;
@@ -55,50 +56,56 @@ public class WebControllerEdit {
         	
 		ModelMap model = new ModelMap();
 		final PortletPreferences prefs = request.getPreferences();
-		String []recupPrefDisplay_userTab = prefs.getValues(WebController.PREF_TAB_USER, null);
-		String []recupPrefDisplay_managerTab = prefs.getValues(WebController.PREF_TAB_MANAGER, null);
+		String []recupPrefDisplay_userTabs = prefs.getValues(WebController.PREF_TAB_USER, null);
+		String []recupPrefDisplay_managerTabs = prefs.getValues(WebController.PREF_TAB_MANAGER, null);
+		String messageFile = prefs.getValue(WebController.PREF_MESSAGE_FILE, "_fr");
 		
 		ArrayOfString managerFilters = domainService.getInvolvementFilters((prefs.getValue(WebController.PREF_WSDL_LOCATION, null)), false);
 		ArrayOfString userFilters = domainService.getInvolvementFilters((prefs.getValue(WebController.PREF_WSDL_LOCATION, null)), true);
 		
 		ArrayList<String> userTabPrefs = new ArrayList<String>();	
 		ArrayList<String> managerTabPrefs = new ArrayList<String>();
-		
+		int i=0;
 		for (String userFilter : userFilters.getString()){
-				if(Arrays.asList(recupPrefDisplay_userTab).contains(userFilter.toLowerCase())){
-					userTabPrefs.add(userFilter.concat(".check").toLowerCase());					
+				if(Arrays.asList(recupPrefDisplay_userTabs).contains(userFilter.toLowerCase())){
+					i++;
+					userTabPrefs.add(String.valueOf(i).concat(".").concat(userFilter).toLowerCase());					
 				}
 				else{
-					userTabPrefs.add(userFilter.concat(".unche").toLowerCase());				
-				}
+					userTabPrefs.add(userFilter.toLowerCase());				
+				}			
 		}
-		for (String managerFilter : managerFilters.getString()){
-			if(Arrays.asList(recupPrefDisplay_managerTab).contains(managerFilter.toLowerCase())){
-				managerTabPrefs.add(managerFilter.concat(".check").toLowerCase());					
+		Collections.sort(userTabPrefs);
+		i=0;
+		for (String managerFilter : managerFilters.getString()){			
+			if(Arrays.asList(recupPrefDisplay_managerTabs).contains(managerFilter.toLowerCase())){
+				i++;
+				managerTabPrefs.add(String.valueOf(i).concat(".").concat(managerFilter).toLowerCase());					
 			}
 			else{
-				managerTabPrefs.add(managerFilter.concat(".unche").toLowerCase());				
+				managerTabPrefs.add(managerFilter.toLowerCase());				
 			}
 		}
-		
-		boolean roViewMode = true;
+		Collections.sort(managerTabPrefs);
+		boolean userViewMode = true;
+		boolean managerViewMode = false;
 		String isManagerViewAble="false";
+		if (prefs.isReadOnly(WebController.PREF_TAB_USER)){
+			userViewMode=false;
+		}
 		PortletSession session = request.getPortletSession();
 		if (session!=null){
 			isManagerViewAble=session.getAttribute("isManagerViewAble").toString();
 		}
-		
-		if ((isManagerViewAble.equalsIgnoreCase("false"))&&(prefs.isReadOnly(WebController.PREF_TAB_USER))){
-			roViewMode=false;
-		}
-		if ((isManagerViewAble.equalsIgnoreCase("true"))&&(prefs.isReadOnly(WebController.PREF_TAB_USER))||(prefs.isReadOnly(WebController.PREF_TAB_MANAGER))){	
-			roViewMode=false;
-			
+		if ((isManagerViewAble.equalsIgnoreCase("true"))&&(!prefs.isReadOnly(WebController.PREF_TAB_MANAGER))){	
+			managerViewMode=true;			
 		}
 		
+		model.put("messageFile",messageFile);
 		model.put("managerTabPrefs",managerTabPrefs);
 		model.put("userTabPrefs",userTabPrefs);
-		model.put("roViewMode", roViewMode);
+		model.put("userViewMode", userViewMode);
+		model.put("managerViewMode", managerViewMode);		
 		model.put("isManagerViewAble", isManagerViewAble);
 		return new ModelAndView("edit-portlet", model);
     }
@@ -107,10 +114,12 @@ public class WebControllerEdit {
 	public void updatePreferences(ActionRequest request, ActionResponse response, 
 			@RequestParam(value = "viewUserBox", required = false) String[] viewUserBox,
 			@RequestParam(value = "viewManagerBox", required = false) String[] viewManagerBox,
-			@RequestParam(value = "viewMode", required = false) String viewMode) throws Exception {
+			@RequestParam(value = "userViewMode", required = false) String userViewMode,
+			@RequestParam(value = "managerViewMode", required = false) String managerViewMode) throws Exception {
     	
     	final PortletPreferences prefs = request.getPreferences();
-    	if(viewMode.equalsIgnoreCase("enable")){  		
+    	
+    	if(userViewMode.equalsIgnoreCase("enable")){  		
     		if(viewUserBox==null) {
     			String[] defUserValues = {"owner"};
     			prefs.setValues(WebController.PREF_TAB_USER, defUserValues);
@@ -118,6 +127,9 @@ public class WebControllerEdit {
     		else{
     			prefs.setValues(WebController.PREF_TAB_USER, viewUserBox);
     		}
+    		prefs.store();
+    	}
+    	if(managerViewMode.equalsIgnoreCase("enable")){ 
     		if(viewManagerBox==null) {
     			String[] defManagerValues = {"managed"};
     			prefs.setValues(WebController.PREF_TAB_MANAGER, defManagerValues);
@@ -125,8 +137,8 @@ public class WebControllerEdit {
     		else{    	
 		    	prefs.setValues(WebController.PREF_TAB_MANAGER, viewManagerBox);
     		}
-		    prefs.store();	
-    	} 
+    		prefs.store(); 	
+    	} 	
     	response.setPortletMode(PortletMode.VIEW);
 	}
 }

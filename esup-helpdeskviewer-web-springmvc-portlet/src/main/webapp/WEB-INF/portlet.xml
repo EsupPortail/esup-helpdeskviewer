@@ -87,25 +87,26 @@
                 <read-only>true</read-only>
             </preference>          
            <preference>
-                <name>display_userTab</name>
+                <name>display_userTabs</name>
                 <value>owner</value>
-                <read-only>true</read-only>
+                <value>any</value>
+                <read-only>false</read-only>
             </preference> 
             <preference>
-                <name>display_managerTab</name>
+                <name>display_managerTabs</name>
                 <value>managed</value>
-                <read-only>true</read-only>
+                <read-only>false</read-only>
             </preference>             
-            <preference>
-                <name>helpdeskMessage</name>
-                <value>Aucun ticket pour cette sélection, merci d'accéder directement à la plateforme d'assistance</value>
-                <read-only>true</read-only>
-            </preference> 
             <preference>
                 <name>authUrl</name>
                 <value></value>
                 <read-only>true</read-only>
-            </preference>           
+            </preference>      
+            <preference>
+                <name>messageFile</name>
+                <value>fr</value>
+                <read-only>true</read-only>
+            </preference>                    
         </portlet-preferences>
     
     </portlet>

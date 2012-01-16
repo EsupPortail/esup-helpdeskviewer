@@ -32,13 +32,13 @@
 <c:set var="n">
 	<portlet:namespace />
 </c:set>
-
+<fmt:setLocale value="${messageFile}" />
 <div class="portlet-title">
 	<h2>
 		<spring:message code="edit.title" />
 	</h2>
 </div>
-<c:if test="${roViewMode eq 'true'}">
+<c:if test="${(userViewMode eq 'false')&&(managerViewMode eq 'false')}">
 	<span><spring:message code="edit.message"/></span>
 </c:if>
 <div class="portlet-section">
@@ -49,36 +49,56 @@
   	  </portlet:actionURL>
 	
 	  <form id="${n}updatePreferences" class="updatePreferences" action="${updatePreferencesUrl}" method="post">
-			<c:if test="${roViewMode eq 'true'}">
+			<c:if test="${userViewMode eq 'true'}">
 				<fieldset>
 					<legend><spring:message code="edit.mode.user"/></legend>
 					<ul>
 						<c:forEach var="userTab" items="${userTabPrefs}">				
 							<li>
-								<input type="checkbox" name="viewUserBox" value="${ fn:substringBefore(userTab, '.') }"  
-								<c:if test="${fn:contains(userTab, 'check')}"> checked="checked"</c:if> /><spring:message code="tab.${ fn:substringBefore(userTab, '.') }"/>
+							  <c:choose>
+								<c:when test="${fn:contains(userTab, '.')}">
+									<input type="checkbox" name="viewUserBox" value="${ fn:substringAfter(userTab, '.') }" checked="checked"/>
+									<spring:message code="tab.${ fn:substringAfter(userTab, '.') }"/>
+								</c:when>
+								<c:otherwise>
+									<input type="checkbox" name="viewUserBox" value="${userTab}" /><spring:message code="tab.${userTab}"/>
+								</c:otherwise>
+							  </c:choose>
 							</li>	
 						</c:forEach>			
 					</ul>
 				</fieldset>
-		   <c:if test="${isManagerViewAble eq 'true'}">
+				<input type="hidden" name="userViewMode" value="enable" />
+		   </c:if>
+		   <c:if test="${managerViewMode eq 'true'}">
 				<fieldset>
 					<legend><spring:message code="edit.mode.manager"/></legend>
 					<ul>
 						<c:forEach var="managerTab" items="${managerTabPrefs}">				
 							<li>
-								<input type="checkbox" name="viewManagerBox" value="${ fn:substringBefore(managerTab, '.') }"  
-								<c:if test="${fn:contains(managerTab, 'check')}"> checked="checked"</c:if> /><spring:message code="tab.${ fn:substringBefore(managerTab, '.') }"/>
+							  <c:choose>
+								<c:when test="${fn:contains(managerTab, '.')}">
+									<input type="checkbox" name="viewManagerBox" value="${ fn:substringAfter(managerTab, '.') }" checked="checked"/>
+									<spring:message code="tab.${ fn:substringAfter(managerTab, '.') }"/>
+								</c:when>
+								<c:otherwise>
+									<input type="checkbox" name="viewManagerBox" value="${managerTab}" /><spring:message code="tab.${managerTab}"/>
+								</c:otherwise>
+							  </c:choose>							
 							</li>
 						</c:forEach>
 					</ul>
 				</fieldset>	
-			</c:if>			
-				<input type="hidden" name="viewMode" value="enable" />
-			</c:if>
-			<c:if test="${roViewMode eq 'false'}">
+				<input type="hidden" name="managerViewMode" value="enable" />
+			</c:if>							
+			<c:if test="${(userViewMode eq 'false')&&(managerViewMode eq 'false')}">
 				<p></p><spring:message code="edit.viewMode.disable"/></p>
-				<input type="hidden" name="viewMode" value="disable" />
+			</c:if>
+			<c:if test="${userViewMode eq 'false'}">
+				<input type="hidden" name="userViewMode" value="disable" />
+			</c:if>
+			<c:if test="${managerViewMode eq 'false'}">
+				<input type="hidden" name="managerViewMode" value="disable" />
 			</c:if>
 			<input type="submit" value="<spring:message code="edit.done"/>" class="portlet-form-button"/>
 		</form>

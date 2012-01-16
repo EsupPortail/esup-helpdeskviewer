@@ -23,6 +23,7 @@
 <%--
 <link rel="stylesheet"  type="text/css" href="<%=request.getContextPath()%>/css/mhelpdeskviewer.css"/>
 --%>
+<fmt:setLocale value="${messageFile}" />
 <c:choose>
 	<c:when test="${target eq 'null'}"> 
 	  <c:set var="targetValue"></c:set>
@@ -80,7 +81,7 @@
 	
 		<c:choose>
 			<c:when test="${noTicketsMsg eq '1'}">
-				<p></p><a class="alarm" href="${urlHelpdesk}" target="_blank"> => ${helpdeskMessage}</a></p>
+				<p></p><a class="alarm" href="${urlHelpdesk}" target="_blank"><spring:message code="view.noticket"/></a></p>
 			</c:when>
 			<c:otherwise>
 				<c:forEach var="ticket" items="${tickets}">

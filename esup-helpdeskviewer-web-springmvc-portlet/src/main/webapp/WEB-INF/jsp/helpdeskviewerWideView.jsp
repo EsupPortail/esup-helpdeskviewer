@@ -23,6 +23,7 @@
 <%--
 <link rel="stylesheet"  type="text/css" href="<%=request.getContextPath()%>/css/helpdeskviewer.css"/>
 --%>
+<fmt:setLocale value="${messageFile}" />
 <c:choose>
 	<c:when test="${target eq 'null'}"> 
 	  <c:set var="targetValue"></c:set>
@@ -64,7 +65,7 @@
 	  		</li>
 	  		<li>
 	  			<img src="<%=request.getContextPath()%>/images/add.png" />
-	  			<a ${targetValue} href="${linkAddTicket}"><spring:message code="link.question"/></a><span>|</span>
+	  			<a ${targetValue} href="${linkAddTicket}"><spring:message code="link.addticket"/></a><span>|</span>
 	  		</li>
 	  		<li>
 	  			<img src="<%=request.getContextPath()%>/images/faq-container.png" />
@@ -90,7 +91,7 @@
   </div>
   <c:choose>
   <c:when test="${noTicketsMsg eq '1'}">
-		<p class="alarm"><a href="${urlHelpdesk}" ${targetValue}>${helpdeskMessage}</a></p>
+		<p class="alarm"><a href="${urlHelpdesk}" ${targetValue}><spring:message code="view.noticket"/></a></p>
   </c:when>
   <c:otherwise>
   <div class="fl-tab-content" role="tabpanel">
@@ -133,7 +134,8 @@
 	              ${ticket.owner.value}
 	            </td>
 	          </tr>
-	        </c:forEach>	    
+	        </c:forEach>	   
+	        <tr><td><a ${targetValue} href="${linkHome}" class="more"><b>...</b></a></td></tr> 
       </tbody>
     </table>
   </div>

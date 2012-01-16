@@ -21,6 +21,7 @@ package org.esupportail.helpdeskviewer.web.springmvc;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -64,10 +65,10 @@ public class WebController {
 	public static final String PREF_DEFAULT_FILTER = "defaultFilter";	
 	public static final String PREF_PORTLET_FNAME = "portletFname";
 	public static final String PREF_TARGET = "target";
-	public static final String PREF_TAB_USER = "display_userTab";	
-	public static final String PREF_TAB_MANAGER = "display_managerTab";	
-	public static final String PREF_HELPDESK_MESSAGE = "helpdeskMessage";
+	public static final String PREF_TAB_USER = "display_userTabs";	
+	public static final String PREF_TAB_MANAGER = "display_managerTabs";	
 	public static final String PREF_AUTH_URL = "authUrl";
+	public static final String PREF_MESSAGE_FILE = "messageFile";
 	
 	private static final String URL_PORTLET_HOME = "uPortal/render.userLayoutRootNode.uP";	
 	
@@ -85,14 +86,14 @@ public class WebController {
 		String userUidAttr = prefs.getValue(PREF_USER_UID_ATTR, "uid");
 		String portletFname = prefs.getValue(PREF_PORTLET_FNAME, null);
 		String target = prefs.getValue(PREF_TARGET, "_blank");		
-		String[] prefsTabManagerTickets  = prefs.getValues("display_managerTab",null);
-		String[] prefsTabUserTickets  = prefs.getValues("display_userTab", null);
-		String helpdeskMessage = prefs.getValue(PREF_HELPDESK_MESSAGE, null);	
+		String[] prefsTabManagerTickets  = prefs.getValues("display_managerTabs",null);
+		String[] prefsTabUserTickets  = prefs.getValues("display_userTabs", null);
 		String authUrl = prefs.getValue(PREF_AUTH_URL, null);
+		String messageFile = prefs.getValue(PREF_MESSAGE_FILE, "_fr");
 		
 		log.info("prefs -> wsdlLocation : "+ wsdlLocation + " maxTickets: " 
 				+ maxTickets + " userUidAttr: " + userUidAttr + " portletFname: " + portletFname + " target: " + target
-				 + " prefsTabUserTickets: " + prefsTabUserTickets + " prefsTabManagerTickets: " + prefsTabManagerTickets + " helpdeskMessage: " + helpdeskMessage + " authUrl: " +authUrl);
+				 + " prefsTabUserTickets: " + prefsTabUserTickets + " prefsTabManagerTickets: " + prefsTabManagerTickets + " helpdeskMessage: " + " authUrl: " +authUrl + " messageFile: " +messageFile);
 
 		if(userView == null) {
 			userView = prefs.getValue(PREF_DEFAULT_USERVIEW, "user");
@@ -158,12 +159,12 @@ public class WebController {
 			}			
 		}
 		if(filters.getString().containsAll(tabTickets)){
-			log.info("display_userTab preference has right items");
+			log.info("display_userTabs preference has right items");
 		}
 		else{
-			log.error("display_userTab preference required right items");
+			log.error("display_userTabs preference required right items");
 		}
-
+		
 		// Message if no ticket
 		if (tickets.getSimpleTicketView().isEmpty())
 			model.put("noTicketsMsg", "1");
@@ -182,7 +183,8 @@ public class WebController {
 			linkAddTicket = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=addTicket");
 			linkFaq = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
 		}
-
+		
+		model.put("messageFile",messageFile);
 		model.put("tabTickets",tabTickets);
 		model.put("linkHome",linkHome);
 		model.put("linkAddTicket",linkAddTicket);
@@ -196,7 +198,6 @@ public class WebController {
 		model.put("filter", filter);
 		model.put("urlHelpdesk", linkHome);
 		model.put("target", target);
-		model.put("helpdeskMessage",helpdeskMessage);
 		
 		return new ModelAndView(viewSelector
 				.getHelpdeskviewerViewName(request), model);
