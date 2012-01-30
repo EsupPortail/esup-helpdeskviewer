@@ -23,6 +23,8 @@ package org.esupportail.helpdeskviewer.web.springmvc;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.portlet.ActionRequest;
@@ -48,9 +50,14 @@ import org.springframework.web.portlet.ModelAndView;
 public class WebControllerEdit {
 
 	protected Logger log = Logger.getLogger(WebControllerEdit.class);
-	protected @Resource
-	DomainService domainService;
+	@Resource
+	protected DomainService domainService;
 	
+    public static String ALL_NUMBER_REGEX = "^\\d+$";
+    private static int SUCCESS = 0;
+    private static int FAILURE = 1;
+    private static int MISSING_INFO = -1;    
+    
     @RequestMapping("EDIT")
 	public ModelAndView renderEditView(RenderRequest request, RenderResponse response) throws Exception {
         	
@@ -59,6 +66,7 @@ public class WebControllerEdit {
 		String []recupPrefDisplay_userTabs = prefs.getValues(WebController.PREF_TAB_USER, null);
 		String []recupPrefDisplay_managerTabs = prefs.getValues(WebController.PREF_TAB_MANAGER, null);
 		String messageFile = prefs.getValue(WebController.PREF_MESSAGE_FILE, "_fr");
+		String nbMaxTickets= prefs.getValue(WebController.PREF_MAX_TICKETS,"15");
 		
 		ArrayOfString managerFilters = domainService.getInvolvementFilters((prefs.getValue(WebController.PREF_WSDL_LOCATION, null)), false);
 		ArrayOfString userFilters = domainService.getInvolvementFilters((prefs.getValue(WebController.PREF_WSDL_LOCATION, null)), true);
@@ -89,7 +97,9 @@ public class WebControllerEdit {
 		Collections.sort(managerTabPrefs);
 		boolean userViewMode = true;
 		boolean managerViewMode = false;
+		boolean maxTicketsViewMode=false;
 		String isManagerViewAble="false";
+		
 		if (prefs.isReadOnly(WebController.PREF_TAB_USER)){
 			userViewMode=false;
 		}
@@ -100,12 +110,16 @@ public class WebControllerEdit {
 		if ((isManagerViewAble.equalsIgnoreCase("true"))&&(!prefs.isReadOnly(WebController.PREF_TAB_MANAGER))){	
 			managerViewMode=true;			
 		}
-		
+		if(!prefs.isReadOnly(WebController.PREF_MAX_TICKETS)){
+			maxTicketsViewMode=true;
+		}
+		model.put("nbMaxTickets",nbMaxTickets);
 		model.put("messageFile",messageFile);
 		model.put("managerTabPrefs",managerTabPrefs);
 		model.put("userTabPrefs",userTabPrefs);
 		model.put("userViewMode", userViewMode);
 		model.put("managerViewMode", managerViewMode);		
+		model.put("maxTicketsViewMode", maxTicketsViewMode);	
 		model.put("isManagerViewAble", isManagerViewAble);
 		return new ModelAndView("edit-portlet", model);
     }
@@ -115,7 +129,8 @@ public class WebControllerEdit {
 			@RequestParam(value = "viewUserBox", required = false) String[] viewUserBox,
 			@RequestParam(value = "viewManagerBox", required = false) String[] viewManagerBox,
 			@RequestParam(value = "userViewMode", required = false) String userViewMode,
-			@RequestParam(value = "managerViewMode", required = false) String managerViewMode) throws Exception {
+			@RequestParam(value = "managerViewMode", required = false) String managerViewMode,
+			@RequestParam(value = "viewMaxTickets", required = false) String viewMaxTickets) throws Exception {
     	
     	final PortletPreferences prefs = request.getPreferences();
     	
@@ -139,6 +154,25 @@ public class WebControllerEdit {
     		}
     		prefs.store(); 	
     	} 	
+    	if((this.testFieldValue(ALL_NUMBER_REGEX, viewMaxTickets)==SUCCESS)&&(!prefs.isReadOnly(WebController.PREF_MAX_TICKETS))){
+    		prefs.setValue(WebController.PREF_MAX_TICKETS, viewMaxTickets);
+    		prefs.store();
+    	}
     	response.setPortletMode(PortletMode.VIEW);
+	}
+    
+	public int testFieldValue(String regexString, String strFieldInput) {
+		int retCode = FAILURE;
+		if ((regexString != null) && (regexString.length() > 0)
+				&& (strFieldInput != null) && (strFieldInput.length() > 0)) {
+			Pattern pattern = Pattern.compile(regexString);
+			Matcher matcher = pattern.matcher(strFieldInput);
+			if (matcher.find()) {
+				retCode = SUCCESS;
+			}
+		} else {
+			retCode = MISSING_INFO;
+		}
+		return retCode;
 	}
 }

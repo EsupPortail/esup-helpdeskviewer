@@ -61,8 +61,7 @@ public class WebController {
 	public static final String PREF_WSDL_LOCATION = "wsdlLocation";
 	public static final String PREF_MAX_TICKETS = "maxTickets";
 	public static final String PREF_USER_UID_ATTR = "userUidAttr";	
-	public static final String PREF_DEFAULT_USERVIEW = "defaultUserView";
-	public static final String PREF_DEFAULT_FILTER = "defaultFilter";	
+	public static final String PREF_DEFAULT_USERVIEW = "defaultUserView";	
 	public static final String PREF_PORTLET_FNAME = "portletFname";
 	public static final String PREF_TARGET = "target";
 	public static final String PREF_TAB_USER = "display_userTabs";	
@@ -172,16 +171,18 @@ public class WebController {
 		log.info("Number of retrieved Tickets: "+ tickets.getSimpleTicketView().size());
 		
 		//Liens menu
-		String linkHome,linkAddTicket,linkFaq;
+		String linkHome,linkAddTicket,linkFaq,linkControlPanel;
 		if(portletFname.isEmpty()){	
 			 linkHome = authUrl.concat("?args=page=welcome");
 			 linkAddTicket = authUrl.concat("?args=page=addTicket");
-			 linkFaq = authUrl.concat("?args=page=faq");		 		 
+			 linkFaq = authUrl.concat("?args=page=faq");		
+			 linkControlPanel=authUrl.concat("?args=page=controlPanel");
 		}
 		else{
 			linkHome = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=welcome");
 			linkAddTicket = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=addTicket");
 			linkFaq = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
+			linkControlPanel = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=controlPanel");
 		}
 		
 		model.put("messageFile",messageFile);
@@ -189,6 +190,7 @@ public class WebController {
 		model.put("linkHome",linkHome);
 		model.put("linkAddTicket",linkAddTicket);
 		model.put("linkFaq",linkFaq);
+		model.put("linkControlPanel",linkControlPanel);
 		model.put("tickets", tickets.getSimpleTicketView());
 		model.put("filters", filters.getString());
 		model.put("defaultFilterUser", prefsTabUserTickets[0].toUpperCase());
@@ -234,12 +236,6 @@ public class WebController {
 				prefsMustBeSaved = true;
 			} 
 
-			if(!prefs.isReadOnly(PREF_DEFAULT_FILTER) && !filter.equals(prefs.getValue(PREF_DEFAULT_FILTER, null))) {
-				prefs.setValue(PREF_DEFAULT_FILTER, filter);
-				log.info("Set PREF_DEFAULT_FILTER for this user : " + filter);
-				prefsMustBeSaved = true;
-			}
-			
 			if(prefsMustBeSaved) {
 				prefs.store();
 			}

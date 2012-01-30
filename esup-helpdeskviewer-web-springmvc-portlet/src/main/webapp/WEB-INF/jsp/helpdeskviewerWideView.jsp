@@ -69,8 +69,12 @@
 	  		</li>
 	  		<li>
 	  			<img src="<%=request.getContextPath()%>/images/faq-container.png" />
-	  			<a ${targetValue} href="${linkFaq}"><spring:message code="link.faq"/></a>
+	  			<a ${targetValue} href="${linkFaq}"><spring:message code="link.faq"/></a><span>|</span>
 	  		</li>  	
+	  		<li>
+	  			<img src="<%=request.getContextPath()%>/images/control-panel.png" />
+	  			<a ${targetValue} href="${linkControlPanel}"><spring:message code="link.control-panel"/></a>
+	  		</li>  		  		
 	  	</ul>
 	</div>  
 	<%--  Tab list of available tickets views --%>

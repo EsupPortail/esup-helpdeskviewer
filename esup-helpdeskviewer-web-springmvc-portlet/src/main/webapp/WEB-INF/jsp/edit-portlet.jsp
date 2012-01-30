@@ -100,6 +100,12 @@
 			<c:if test="${managerViewMode eq 'false'}">
 				<input type="hidden" name="managerViewMode" value="disable" />
 			</c:if>
+			<c:if test="${maxTicketsViewMode eq 'true'}">
+				<fieldset>
+					<legend><spring:message code="edit.mode.maxtickets"/></legend>
+					<input type="text" name="viewMaxTickets"  size="3" maxlength="3" value="${nbMaxTickets}"/>
+				</fieldset>	
+			</c:if>
 			<input type="submit" value="<spring:message code="edit.done"/>" class="portlet-form-button"/>
 		</form>
 	</div>

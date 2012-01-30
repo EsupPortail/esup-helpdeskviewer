@@ -59,7 +59,7 @@
             <preference>
                 <name>maxTickets</name>
                 <value>15</value>
-                <read-only>true</read-only>
+                <read-only>false</read-only>
             </preference>
             <preference>
                 <name>userUidAttr</name>
@@ -75,12 +75,7 @@
                 <name>defaultUserView</name>
                 <value>user</value>
                 <read-only>true</read-only>
-            </preference>       
-            <preference>
-                <name>defaultFilter</name>
-                <value>ANY</value>
-                <read-only>false</read-only>
-            </preference>     
+            </preference>           
             <preference>
                 <name>target</name>
                 <value>_blank</value>
