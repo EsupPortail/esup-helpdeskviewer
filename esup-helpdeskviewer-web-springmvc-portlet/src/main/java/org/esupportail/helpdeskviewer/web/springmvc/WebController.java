@@ -139,10 +139,21 @@ public class WebController {
 					"TODO: make this better with additional methods in EsupHelpdesk WS");
 		}
 		
+		//String helpdeskVersion=domainService.getVersion(wsdlLocation);
+		
 		ArrayOfSimpleTicketView tickets = domainService.getLastTickets(wsdlLocation, uid,
 				Integer.parseInt(maxTickets), filter,
 				userViewBool);
 		
+		//To remove with the next version of esup-helpdesk
+		String testTicketManager="none";
+		/*Ne marche pas!!
+		for(int j=0;j<tickets.getSimpleTicketView().size();j++){
+			if(tickets.getSimpleTicketView().get(j).getTicketManager()!=null){
+				testTicketManager="exist";
+			}
+		}
+		*/
 		ArrayOfString filters = domainService.getInvolvementFilters(wsdlLocation, userViewBool);
 		
     	
@@ -184,7 +195,7 @@ public class WebController {
 			linkFaq = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
 			linkControlPanel = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=controlPanel");
 		}
-		
+		model.put("testTicketManager",testTicketManager);
 		model.put("messageFile",messageFile);
 		model.put("tabTickets",tabTickets);
 		model.put("linkHome",linkHome);

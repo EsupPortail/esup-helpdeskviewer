@@ -15,90 +15,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-.helpdeskviewer-messages-mobile{
-width :100%;
-background:#FFF;
-font-style:normal;
-padding-top: 
-min-height: 960px;
-color:black;
+ 
+.esup-helpdeskviewer  .ui-content{
+padding: 0!important;
+overflow: hidden;
 }
-.helpdeskviewer-messages-mobile #helpdeskviewer-main ul{
-margin:0.7em;
-padding:0;
-background: url("/HelpdeskViewer/images/bullet_red.png") 0 0.1em no-repeat;
+.esup-helpdeskviewer  .ui-icon-helpdesk-user {
+background: url(/esup-helpdeskviewer/images/user.png) center center no-repeat;
+background-size: 11px 11px;
 }
-.helpdeskviewer-messages-mobile #helpdeskviewer-main ul li{
+.esup-helpdeskviewer  .ui-icon-helpdesk-manager {
+background: url(/esup-helpdeskviewer/images/manager.png) center center no-repeat;
+background-size: 11px 11px;
+}
+.esup-helpdeskviewer  .ui-select{
+width: 95%;
+margin: 0 auto 2px auto;
+}
+.esup-helpdeskviewer  ul li form{
+margin: 10px;
+}
+.esup-helpdeskviewer  h3 .ui-btn-text{
+color: rgb(36, 137, 206);
+font-weight: bold;
+font-size: 14px;
+}
+.esup-helpdeskviewer  #details-tickets{
 list-style-type: none;
-padding-left:1.1em;
 }
-.helpdeskviewer-messages-mobile #helpdeskviewer-main ul li span{
-font-weight:bold;
-color:#344461;
+.esup-helpdeskviewer  ul#details-tickets li span{
+font-weight: bold;
 }
-.helpdeskviewer-messages-mobile #helpdeskviewer-main p.alarm{
-font-weight:bold;
-color:red;
-text-indent: 12px;
-font-size: 0.8em;
-margin:0;
+.esup-helpdeskviewer  ul#details-tickets li span.ui-btn-text{
+color: #192A89;
 }
-.helpdeskviewer-messages-mobile #helpdeskviewer-main a.alarm {
-color:blue;
-margin: 0 0 0 12px;
-padding:0;
+.esup-helpdeskviewer  a.bold span.ui-btn-text {
+color: red;
 }
-.helpdeskviewer-messages-mobile .bold{
-font-weight: bold;	
+div.esup-helpdeskviewer  a.alert span.ui-btn-text {
+color: #59533B;
+white-space: normal;
 }
-.helpdeskviewer-messages-mobile a.helpdeskLink{
-text-decoration : underline;
-font-size:100%;
-vertical-align:top;
-color:#2758B3;
+.esup-helpdeskviewer  .ui-navbar{
+margin-bottom: 20px;
 }
-.helpdeskviewer-messages-mobile h3.trigger{
-color:#2758B3;
-font-variant :small-caps;
-font-style:normal;
-font-size:1.3em;
+.esup-helpdeskviewer form input[type="submit"]{
+display: none;
 }
-.helpdeskviewer-messages-mobile .focus{
-color :red;
-}
-.helpdeskviewer-messages-mobile #helpdeskviewer-main{
-margin-left:10px;
-}
-.helpdeskviewer-messages-mobile .helpdeskviewer-menu{
-margin:0;
-}
-.helpdeskviewer-messages-mobile .helpdeskviewer-menu ul{
-margin: 2px auto 10px auto;
-text-align:center;
-}
-.helpdeskviewer-messages-mobile .helpdeskviewer-menu ul li {
-list-style-type:none;
-display: inline;
-font-weight:bold;
-}
-helpdeskviewer-messages-mobile .helpdeskviewer-menu ul li a {
-font-color:#000088;
-}
-.helpdeskviewer-messages-mobile .helpdeskviewer-menu ul li span{
-padding:0 0 0 0.5em;
-}
-.helpdeskviewer-messages-mobile .helpdeskviewer-menu li img{
-padding:0 .2em 0 0.1em;
-vertical-align:text-bottom;
-}
-.helpdeskviewer-messages-mobile .helpdeskviewer-menu .bold{
-color: #DD3849 !important;
-}
-.helpdeskviewer-messages-mobile .helpdeskviewer-menu  hr{
-color:#666;
-}
-.helpdeskviewer-messages-mobile .helpdeskviewer-menu h3{
-text-align:center;
-margin:2px auto 0 auto;
+.esup-helpdeskviewer .ui-btn{
+text-shadow: none !important;
 }
