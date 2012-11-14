@@ -17,6 +17,20 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
+
+
+        <!-- To not break javamail and decoding/encoding capabilities 
+             we should add a dependance on a recently release of jaxws-rt 
+             Without this, we break email-preview regarding character decoding
+             @see http://java.net/jira/browse/JAX_WS-656
+             and https://forums.oracle.com/forums/thread.jspa?messageID=6659180
+        --> 
+	<dependency>
+	  <groupId>com.sun.xml.ws</groupId>
+	  <artifactId>jaxws-rt</artifactId>
+	  <version>2.2.7</version>
+	</dependency>
+
     </dependencies>
      <build>
 		<finalName>${pom.artifactId}</finalName>
@@ -24,6 +38,7 @@
 			<plugin>
 			  <groupId>org.apache.cxf</groupId>
 			  <artifactId>cxf-codegen-plugin</artifactId>
+			  <version>2.7.0</version>
 			  <executions>
 			    <execution>
 			      <id>generate-sources</id>
