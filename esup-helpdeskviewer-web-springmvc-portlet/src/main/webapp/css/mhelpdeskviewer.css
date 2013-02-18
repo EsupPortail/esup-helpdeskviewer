@@ -37,7 +37,6 @@ margin: 10px;
 }
 .esup-helpdeskviewer  h3 .ui-btn-text{
 color: rgb(36, 137, 206);
-font-weight: bold;
 font-size: 14px;
 }
 .esup-helpdeskviewer  #details-tickets{
@@ -64,4 +63,7 @@ display: none;
 }
 .esup-helpdeskviewer .ui-btn{
 text-shadow: none !important;
+}
+h3.helpdeskviewer-unread-ticket .ui-btn-text{
+color: red;
 }

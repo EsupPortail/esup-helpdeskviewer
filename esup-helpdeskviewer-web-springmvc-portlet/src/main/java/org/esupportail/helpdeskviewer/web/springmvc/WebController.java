@@ -145,15 +145,16 @@ public class WebController {
 				Integer.parseInt(maxTickets), filter,
 				userViewBool);
 		
-		//To remove with the next version of esup-helpdesk
+		
 		String testTicketManager="none";
-		/*Ne marche pas!!
+	
 		for(int j=0;j<tickets.getSimpleTicketView().size();j++){
 			if(tickets.getSimpleTicketView().get(j).getTicketManager()!=null){
 				testTicketManager="exist";
+				break;
 			}
 		}
-		*/
+		
 		ArrayOfString filters = domainService.getInvolvementFilters(wsdlLocation, userViewBool);
 		
     	
