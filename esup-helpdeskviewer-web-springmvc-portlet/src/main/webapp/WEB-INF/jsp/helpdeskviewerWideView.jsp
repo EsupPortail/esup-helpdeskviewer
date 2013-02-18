@@ -103,6 +103,7 @@
       <tbody>
 	      <thead>
 	        <tr>
+	         <th><spring:message code="tab.thead.lastMessage"/></th>
 	         <th><spring:message code="tab.thead.subject"/></th>
 	         <th><spring:message code="tab.thead.category"/></th>
 	         <th><spring:message code="tab.thead.department"/></th>
@@ -117,6 +118,7 @@
 	        <c:forEach var="ticket" items="${tickets}" varStatus="counter">
 	        <c:set var="className">${ (counter.index % 2 == 0) ? 'portlet-section-body' : 'portlet-section-alternate'} ${ticket.viewed.value eq 'false' ? 'helpdeskviewer-read-ticket' : 'helpdeskviewer-unread-ticket'}</c:set>         
 	          <tr class="${className} helpdeskviewer-messages-table-cell-flags">
+	            <td><span class="togglePoint"><a href="#"><img src="<%=request.getContextPath()%>/images/bullet_toggle_plus.png" /></a></span></td>
 	            <td>
 	              <a ${targetValue} href='${ticket.deepLink.value}' >
 	                ${ticket.label.value}
@@ -141,11 +143,31 @@
 	              ${ticket.owner.value}
 	            </td>
 	            <c:if test="${testTicketManager eq 'exist'}">
-		            <td>
+		           <td>
 		              ${ticket.ticketManager.value}
 		            </td>
 	            </c:if>
 	          </tr>
+	          <tr class="toggleable" >
+		         <td>  
+		            <div class="msgTicket">		                	    
+	                <c:forEach var="msg" items="${ticket.actions.value.simpleActionView}" varStatus="status">	            
+		              <c:if test="${status.last eq true}">
+		              	<c:if test="${!empty msg.message.value}">
+		              		<h3><spring:message code="ticket.lastMessage"/>: </h3>
+		           			${msg.message.value}
+		              	</c:if>	   
+		              	<c:if test="${empty msg.message.value}">
+		              	  <spring:message code="ticket.noLastMessage"/>
+		              	</c:if>	           
+		               </c:if>
+	              	</c:forEach>  
+	              		<p></p><a ${targetValue} href='${ticket.deepLink.value}'>
+	                		<spring:message code="ticket.see"/>
+	             		</a></p>
+		           	</div>     	 
+		         </td>        
+	          </tr>	          
 	        </c:forEach>	   
 	        <tr><td><a ${targetValue} href="${linkHome}" class="more"><b>...</b></a></td></tr> 
       </tbody>
@@ -156,3 +178,35 @@
   </c:choose>
 </div>
 </div>
+<script type="text/javascript">
+up.jQuery(document).ready(function() {
+	var numCol= up.jQuery('.helpdeskviewer-messages-table').find('tr')[0].cells.length;	
+	up.jQuery(".helpdeskviewer-messages-table tr.toggleable td").attr("colspan", numCol);
+	up.jQuery(".helpdeskviewer-messages-table .msgTicket").css("display","block").css("background-color","#F9F9EA")
+	.css("font-size","13px").css("padding","5px").css("color","black");
+	up.jQuery(".helpdeskviewer-messages-table h3").css("color","red").css("margin","5px 0 10px 0").css("text-decoration","underline");
+	up.jQuery('.helpdeskviewer-messages-table span.togglePoint a:nth-child(2)').hide("fast");
+	up.jQuery('.helpdeskviewer-messages-table tr.toggleable').hide("fast");
+	up.jQuery('.helpdeskviewer-messages-table .togglePoint').click(function(event){
+		event.preventDefault();
+		up.jQuery(this).parent().parent().next('tr').animate({
+            height: "toggle",
+            opacity: "toggle"
+        }, "medium",function(){
+    		var status=up.jQuery(this).is(":hidden");
+
+    		var index = up.jQuery(this).prev("tr").index();
+    		if(status==false){
+    			up.jQuery(this).parent().parent().next('tr').removeClass("toggleable");   			
+    			console.log(index);
+    			up.jQuery(this).prev("tr").children().children().children().addClass("open" + index);
+    			up.jQuery(".open"  + index).html("<img src=\"<%=request.getContextPath()%>/images/bullet_toggle_minus.png\" />");
+    		}
+    		else{
+    			up.jQuery(".open"  + index).html("<img src=\"<%=request.getContextPath()%>/images/bullet_toggle_plus.png\" />");	
+    		}   		
+        }
+       );  
+	});
+});
+</script>

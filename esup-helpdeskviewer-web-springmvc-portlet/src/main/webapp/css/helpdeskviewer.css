@@ -65,3 +65,6 @@ color: #DD3849 !important;
 .helpdeskviewer-edit li{
 list-style-type:none;
 }
+span.togglePoint {
+font-size: 23px;
+}
