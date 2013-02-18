@@ -23,6 +23,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
+
+
 import org.esupportail.commons.exceptions.EsupException;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
@@ -34,6 +38,9 @@ import org.esupportail.helpdesk.services.remote.ArrayOfString;
 import org.esupportail.helpdesk.services.remote.Helpdesk;
 import org.esupportail.helpdesk.services.remote.HelpdeskPortType;
 
+import org.esupportail.helpdeskviewer.ws.EsupResponseHandleInterceptor;
+
+
 @Service("domainService")
 public class DomainServiceImpl implements DomainService, InitializingBean {
 
@@ -42,7 +49,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	private final Logger logger = new LoggerImpl(this.getClass());
 	
 	Map<String, HelpdeskPortType> helpdesks = new HashMap<String, HelpdeskPortType>();
-
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		// TODO Auto-generated method stub
@@ -77,6 +84,10 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 		if(helpdesk == null) {
 			try {
 				helpdesk = new Helpdesk(new URL(wsdlLocation)).getHelpdeskHttpPort();
+				
+				Client cxfClient = ClientProxy.getClient(helpdesk);
+				cxfClient.getInInterceptors().add(new EsupResponseHandleInterceptor());
+				
 				helpdesks.put(wsdlLocation, helpdesk);
 				logger.info("HelpdeskPortType with wsdlLocation[" + wsdlLocation + "] is created" );
 			} catch (MalformedURLException e) {
