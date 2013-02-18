@@ -84,8 +84,9 @@
 			</c:when>
 			<c:otherwise>
 				<c:forEach var="ticket" items="${tickets}">
+				 <c:set var="className">${ticket.viewed.value eq 'false' ? 'helpdeskviewer-read-ticket' : 'helpdeskviewer-unread-ticket'}</c:set> 
 				  <div data-role="collapsible"> 
-				  	<h3>${ticket.label.value}</h3>	
+				  	<h3 class="${className}">${ticket.label.value}</h3>	
 					<ul id="details-tickets">
 						<li><a target="blank" href='${ticket.deepLink.value}' data-role="button" data-mini="true" data-inline="true" data-icon="forward"><spring:message code="link.see" /></a></li>
 						<li><span><spring:message code="tab.thead.category" />
@@ -108,7 +109,21 @@
 						<c:if test="${testTicketManager eq 'exist'}">
 							<li><span><spring:message code="tab.thead.ticketManager" />
 								:</span> ${ticket.ticketManager.value}</li>	
-						</c:if>		
+						</c:if>
+						<div data-role="collapsible">
+							<h3><spring:message code="ticket.lastMessage"/></h3>	
+			                <c:forEach var="msg" items="${ticket.actions.value.simpleActionView}" varStatus="status">	            
+				              <c:if test="${status.last eq true}">
+				              	<c:if test="${!empty msg.message.value}">
+				           			${msg.message.value}
+				              	</c:if>	   
+				              	<c:if test="${empty msg.message.value}">
+				              	  <spring:message code="ticket.noLastMessage"/>
+				              	</c:if>	           
+				               </c:if>
+			              	</c:forEach>  				 
+			              	<p><a target="blank" href='${ticket.deepLink.value}' data-role="button" data-mini="true" data-inline="true" data-icon="forward"><spring:message code="ticket.see" /></a></p>
+						</div>		
 					  </div>					
 					</ul>
 				</c:forEach>
