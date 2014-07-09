@@ -106,10 +106,6 @@
 						</li>
 						<li><span><spring:message code="tab.thead.owner" />
 								:</span> ${ticket.owner.value}</li>
-						<c:if test="${testTicketManager eq 'exist'}">
-							<li><span><spring:message code="tab.thead.ticketManager" />
-								:</span> ${ticket.ticketManager.value}</li>	
-						</c:if>
 						<div data-role="collapsible">
 							<h3><spring:message code="ticket.lastMessage"/></h3>	
 			                <c:forEach var="msg" items="${ticket.actions.value.simpleActionView}" varStatus="status">	            
