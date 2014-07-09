@@ -110,9 +110,6 @@
 	         <th><spring:message code="tab.thead.creation"/></th>
 	         <th><spring:message code="tab.thead.status"/></th>
 	         <th><spring:message code="tab.thead.owner"/></th>
-	         <c:if test="${testTicketManager eq 'exist'}">
-	          <th><spring:message code="tab.thead.ticketManager"/></th>
-	         </c:if>
 	        </tr>
 	      </thead>
 	        <c:forEach var="ticket" items="${tickets}" varStatus="counter">

@@ -144,17 +144,7 @@ public class WebController {
 		ArrayOfSimpleTicketView tickets = domainService.getLastTickets(wsdlLocation, uid,
 				Integer.parseInt(maxTickets), filter,
 				userViewBool);
-		
-		
-		String testTicketManager="none";
-	
-		for(int j=0;j<tickets.getSimpleTicketView().size();j++){
-			if(tickets.getSimpleTicketView().get(j).getTicketManager()!=null){
-				testTicketManager="exist";
-				break;
-			}
-		}
-		
+			
 		ArrayOfString filters = domainService.getInvolvementFilters(wsdlLocation, userViewBool);
 		
     	
@@ -196,7 +186,7 @@ public class WebController {
 			linkFaq = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=faq");
 			linkControlPanel = "/".concat(URL_PORTLET_HOME).concat("?uP_fname=").concat(portletFname).concat("&uP_args=page=controlPanel");
 		}
-		model.put("testTicketManager",testTicketManager);
+
 		model.put("messageFile",messageFile);
 		model.put("tabTickets",tabTickets);
 		model.put("linkHome",linkHome);
