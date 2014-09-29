@@ -68,6 +68,7 @@ public class WebController {
 	public static final String PREF_TAB_MANAGER = "display_managerTabs";	
 	public static final String PREF_AUTH_URL = "authUrl";
 	public static final String PREF_MESSAGE_FILE = "messageFile";
+	public static final String PREF_MAX_COMMENTS = "maxComments";
 	
 	private static final String URL_PORTLET_HOME = "uPortal/render.userLayoutRootNode.uP";	
 	
@@ -89,10 +90,12 @@ public class WebController {
 		String[] prefsTabUserTickets  = prefs.getValues("display_userTabs", null);
 		String authUrl = prefs.getValue(PREF_AUTH_URL, null);
 		String messageFile = prefs.getValue(PREF_MESSAGE_FILE, "_fr");
+		String maxComments = prefs.getValue(PREF_MAX_COMMENTS, "1");
 		
 		log.info("prefs -> wsdlLocation : "+ wsdlLocation + " maxTickets: " 
 				+ maxTickets + " userUidAttr: " + userUidAttr + " portletFname: " + portletFname + " target: " + target
-				 + " prefsTabUserTickets: " + prefsTabUserTickets + " prefsTabManagerTickets: " + prefsTabManagerTickets + " helpdeskMessage: " + " authUrl: " +authUrl + " messageFile: " +messageFile);
+				 + " prefsTabUserTickets: " + prefsTabUserTickets + " prefsTabManagerTickets: " + prefsTabManagerTickets 
+				 + " helpdeskMessage: " + " authUrl: " +authUrl + " messageFile: " +messageFile + " maxComments: " + maxComments);
 
 		if(userView == null) {
 			userView = prefs.getValue(PREF_DEFAULT_USERVIEW, "user");
@@ -202,6 +205,7 @@ public class WebController {
 		model.put("filter", filter);
 		model.put("urlHelpdesk", linkHome);
 		model.put("target", target);
+		model.put("maxComments", maxComments);
 		
 		return new ModelAndView(viewSelector
 				.getHelpdeskviewerViewName(request), model);
