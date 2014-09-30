@@ -101,7 +101,12 @@
                 <name>messageFile</name>
                 <value>fr</value>
                 <read-only>true</read-only>
-            </preference>                    
+            </preference>     
+            <preference>
+                <name>maxComments</name>
+                <value>1</value>
+                <read-only>false</read-only>
+            </preference>                           
         </portlet-preferences>
     
     </portlet>

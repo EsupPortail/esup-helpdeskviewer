@@ -67,6 +67,7 @@ public class WebControllerEdit {
 		String []recupPrefDisplay_managerTabs = prefs.getValues(WebController.PREF_TAB_MANAGER, null);
 		String messageFile = prefs.getValue(WebController.PREF_MESSAGE_FILE, "_fr");
 		String nbMaxTickets= prefs.getValue(WebController.PREF_MAX_TICKETS,"15");
+		String nbMaxComments = prefs.getValue(WebController.PREF_MAX_COMMENTS, "1");
 		
 		ArrayOfString managerFilters = domainService.getInvolvementFilters((prefs.getValue(WebController.PREF_WSDL_LOCATION, null)), false);
 		ArrayOfString userFilters = domainService.getInvolvementFilters((prefs.getValue(WebController.PREF_WSDL_LOCATION, null)), true);
@@ -98,6 +99,7 @@ public class WebControllerEdit {
 		boolean userViewMode = true;
 		boolean managerViewMode = false;
 		boolean maxTicketsViewMode=false;
+		boolean maxCommentsViewMode=false;
 		String isManagerViewAble="false";
 		
 		if (prefs.isReadOnly(WebController.PREF_TAB_USER)){
@@ -113,6 +115,9 @@ public class WebControllerEdit {
 		if(!prefs.isReadOnly(WebController.PREF_MAX_TICKETS)){
 			maxTicketsViewMode=true;
 		}
+		if(!prefs.isReadOnly(WebController.PREF_MAX_COMMENTS)){
+			maxCommentsViewMode=true;
+		}
 		model.put("nbMaxTickets",nbMaxTickets);
 		model.put("messageFile",messageFile);
 		model.put("managerTabPrefs",managerTabPrefs);
@@ -121,6 +126,8 @@ public class WebControllerEdit {
 		model.put("managerViewMode", managerViewMode);		
 		model.put("maxTicketsViewMode", maxTicketsViewMode);	
 		model.put("isManagerViewAble", isManagerViewAble);
+		model.put("nbMaxComments",nbMaxComments);
+		model.put("maxCommentsViewMode", maxCommentsViewMode);			
 		return new ModelAndView("edit-portlet", model);
     }
 
@@ -130,8 +137,9 @@ public class WebControllerEdit {
 			@RequestParam(value = "viewManagerBox", required = false) String[] viewManagerBox,
 			@RequestParam(value = "userViewMode", required = false) String userViewMode,
 			@RequestParam(value = "managerViewMode", required = false) String managerViewMode,
-			@RequestParam(value = "viewMaxTickets", required = false) String viewMaxTickets) throws Exception {
-    	
+			@RequestParam(value = "viewMaxTickets", required = false) String viewMaxTickets,
+			@RequestParam(value = "viewMaxComments", required = false) String viewMaxComments) throws Exception {
+				
     	final PortletPreferences prefs = request.getPreferences();
     	
     	if(userViewMode.equalsIgnoreCase("enable")){  		
@@ -156,6 +164,10 @@ public class WebControllerEdit {
     	} 	
     	if((this.testFieldValue(ALL_NUMBER_REGEX, viewMaxTickets)==SUCCESS)&&(!prefs.isReadOnly(WebController.PREF_MAX_TICKETS))){
     		prefs.setValue(WebController.PREF_MAX_TICKETS, viewMaxTickets);
+    		prefs.store();
+    	}
+    	if((this.testFieldValue(ALL_NUMBER_REGEX, viewMaxComments)==SUCCESS)&&(!prefs.isReadOnly(WebController.PREF_MAX_COMMENTS))){
+    		prefs.setValue(WebController.PREF_MAX_COMMENTS, viewMaxComments);
     		prefs.store();
     	}
     	response.setPortletMode(PortletMode.VIEW);

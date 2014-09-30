@@ -107,17 +107,27 @@
 						<li><span><spring:message code="tab.thead.owner" />
 								:</span> ${ticket.owner.value}</li>
 						<div data-role="collapsible">
-							<h3><spring:message code="ticket.lastMessage"/></h3>	
-			                <c:forEach var="msg" items="${ticket.actions.value.simpleActionView}" varStatus="status">	            
-				              <c:if test="${status.last eq true}">
-				              	<c:if test="${!empty msg.message.value}">
-				           			${msg.message.value}
-				              	</c:if>	   
-				              	<c:if test="${empty msg.message.value}">
-				              	  <spring:message code="ticket.noLastMessage"/>
-				              	</c:if>	           
-				               </c:if>
-			              	</c:forEach>  				 
+			            	<c:set var="msgs" value="${ticket.actions.value.simpleActionView}"/>
+							<c:set var="msgsLength" value="${fn:length(msgs)}"/>
+							<c:set var="totalCount"  value="0"/>
+							<c:forEach items="${msgs}" varStatus="status">					
+								<c:if test="${msgs[msgsLength - status.count].message.nil  eq false }">
+									<c:set var="lastComment"  value="${msgs[msgsLength - status.count].message.value}"/>						           
+							        <c:set var="totalCount" value="${totalCount + 1}" />						           
+								</c:if>
+								
+								<c:if test="${totalCount <= maxComments and  msgs[msgsLength - status.count].message.nil  eq false}">
+								<c:choose>
+									<c:when test="${totalCount == 1}" >
+										<h3><spring:message code="ticket.lastMessage"/>: </h3>
+									</c:when>
+									<c:otherwise>
+										<hr /><br />
+									</c:otherwise>
+								</c:choose>
+									${lastComment}
+								</c:if>
+							</c:forEach>  				 
 			              	<p><a target="blank" href='${ticket.deepLink.value}' data-role="button" data-mini="true" data-inline="true" data-icon="forward"><spring:message code="ticket.see" /></a></p>
 						</div>		
 					  </div>					
