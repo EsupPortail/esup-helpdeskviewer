@@ -4,7 +4,7 @@
     <parent>
         <artifactId>esup-helpdeskviewer</artifactId>
         <groupId>org.esupportail.helpdeskviewer</groupId>
-        <version>1.2.2</version>
+        <version>1.2.3-SNAPSHOT</version>
     </parent>
     <groupId>org.esupportail.helpdeskviewer</groupId>
     <artifactId>esup-helpdeskviewer-ws-client</artifactId>
