@@ -18,7 +18,7 @@
 
 
 
-package org.esupportail.helpdeskviewer.web.springmvc;
+package org.esupportail.helpdeskviewer.web;
 
 import java.util.ArrayList;
 import java.util.Arrays;

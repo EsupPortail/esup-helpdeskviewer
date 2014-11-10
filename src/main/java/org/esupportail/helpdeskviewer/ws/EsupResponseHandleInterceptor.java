@@ -9,13 +9,11 @@ import org.apache.cxf.io.CachedOutputStream;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
-
+import org.apache.log4j.Logger;
 
 public class EsupResponseHandleInterceptor extends AbstractPhaseInterceptor<Message> {
 
-	private final Logger log = new LoggerImpl(this.getClass());
+	private final Logger log = Logger.getLogger(this.getClass());
 	
 	public EsupResponseHandleInterceptor() {
 		super(Phase.RECEIVE);

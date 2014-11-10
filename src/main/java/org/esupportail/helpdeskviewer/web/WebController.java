@@ -16,12 +16,11 @@
  * limitations under the License.
  */
 
-package org.esupportail.helpdeskviewer.web.springmvc;
+package org.esupportail.helpdeskviewer.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -40,11 +39,11 @@ import org.apache.commons.logging.LogFactory;
 import org.esupportail.helpdesk.services.remote.ArrayOfSimpleTicketView;
 import org.esupportail.helpdesk.services.remote.ArrayOfString;
 import org.esupportail.helpdeskviewer.domain.DomainService;
-import org.esupportail.helpdeskviewer.web.springmvc.ViewSelectorDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.ModelAndView;
+import org.esupportail.helpdeskviewer.web.ViewSelectorDefault;
 
 
 @Controller

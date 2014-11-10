@@ -27,17 +27,14 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 
 
-import org.esupportail.commons.exceptions.EsupException;
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
-
 import org.esupportail.helpdesk.services.remote.ArrayOfSimpleTicketView;
 import org.esupportail.helpdesk.services.remote.ArrayOfString;
 import org.esupportail.helpdesk.services.remote.Helpdesk;
 import org.esupportail.helpdesk.services.remote.HelpdeskPortType;
-
 import org.esupportail.helpdeskviewer.ws.EsupResponseHandleInterceptor;
 
 
@@ -46,7 +43,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 
 	private static final long serialVersionUID = 5562208937407153456L;
 
-	private final Logger logger = new LoggerImpl(this.getClass());
+	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	Map<String, HelpdeskPortType> helpdesks = new HashMap<String, HelpdeskPortType>();
 	
@@ -91,8 +88,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 				helpdesks.put(wsdlLocation, helpdesk);
 				logger.info("HelpdeskPortType with wsdlLocation[" + wsdlLocation + "] is created" );
 			} catch (MalformedURLException e) {
-				throw new EsupException("pb retieving ws from " + wsdlLocation, e) {
-				};
+				logger.info("pb retieving ws from " + wsdlLocation, e);
 			}
 		}
 		return helpdesk;

@@ -43,7 +43,7 @@
 	</util:list>
 
     <bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-        <property name="interceptors"><bean class="org.esupportail.helpdeskviewer.web.springmvc.MinimizedStateHandlerInterceptor"/></property>
+        <property name="interceptors"><bean class="org.esupportail.helpdeskviewer.web.MinimizedStateHandlerInterceptor"/></property>
     </bean>
 
 </beans>
